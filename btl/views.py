@@ -70,7 +70,7 @@ def admin_home(request):
     user = get_current_user(request)
     if not user or user.role_id.role_name.upper() != 'ADMIN':
         return redirect('login')
-    return render(request, 'admin/home.html', {'user': user})
+    return render(request, 'quan-ly/home.html', {'user': user})
 
 def user_home(request):
     user = get_current_user(request)
@@ -88,7 +88,7 @@ def quan_ly_do_vat(request):
         form = Quan_ly_do_vat()
 
     do_vat = ServiceCategory.objects.all().order_by('category_name')
-    return render(request, 'admin/quan_ly_do_vat.html', {
+    return render(request, 'quan-ly/quan_ly_do_vat.html', {
         'form': form,
         'do_vat': do_vat
     })    
@@ -107,7 +107,7 @@ def sua_do_vat(request, id):
             return redirect('quan_ly_do_vat')
     else:
         form = Quan_ly_do_vat(instance=loc)
-    return render(request, 'admin/sua_do_vat.html', {'form': form})
+    return render(request, 'quan_ly/sua_do_vat.html', {'form': form})
 
 def noi_de_do(request):
     if request.method == 'POST':
@@ -119,7 +119,7 @@ def noi_de_do(request):
         form = Noi_de_do()
 
     noi_de_dos = StorageLocation.objects.all().order_by('location_name')
-    return render(request, 'admin/noi_de_do.html', {
+    return render(request, 'quan_ly/noi_de_do.html', {
         'form': form,
         'noi_de_dos': noi_de_dos
     })  
@@ -138,7 +138,7 @@ def sua_noi_de_do(request, id):
             return redirect('noi_de_do')
     else:
         form = Noi_de_do(instance=loc)
-    return render(request, 'admin/sua_noi_de_do.html', {'form': form})  
+    return render(request, 'quan_ly/sua_noi_de_do.html', {'form': form})  
 
 def danh_sach_do_vat(request):
     if request.method == 'POST':
@@ -151,7 +151,7 @@ def danh_sach_do_vat(request):
 
     do_vat = InventoryItem.objects.select_related('category', 'location').order_by('item_name')
     
-    return render(request, 'admin/danh_sach_do_vat.html', {
+    return render(request, 'quan_ly/danh_sach_do_vat.html', {
         'form': form,
         'do_vat': do_vat
     })
@@ -170,12 +170,12 @@ def sua_danh_sach_do_vat(request, id):
             return redirect('danh_sach_do_vat')
     else:
         form = InventoryItemForm(instance=loc)
-    return render(request, 'admin/sua_danh_sach_do_vat.html', {'form': form})
+    return render(request, 'quan_ly/sua_danh_sach_do_vat.html', {'form': form})
 
 def admin_notifications(request):
     notifications = Notification.objects.select_related('user').all().order_by('notification_id')
     users = User.objects.filter(role_id=2)
-    return render(request, 'admin/notifications.html', {
+    return render(request, 'quan_ly/notifications.html', {
         'notifications': notifications,
         'users': users
     })
@@ -207,7 +207,7 @@ def admin_edit_notification(request, id):
             return redirect('admin_notifications')
     else:
         form = NotificationForm(instance=loc)
-    return render(request, 'admin/sua_thong_bao.html', {'form': form})
+    return render(request, 'quan_ly/sua_thong_bao.html', {'form': form})
 
 def user_notifications(request):
     user = get_current_user(request)
