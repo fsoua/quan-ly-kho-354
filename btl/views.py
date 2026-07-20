@@ -260,7 +260,7 @@ def admin_quan_ly_nhap_kho(request):
     
     pending_transactions = Transaction.objects.filter(status='PENDING', transaction_type='IMPORT')
     logs = ApprovalLog.objects.select_related('transaction', 'admin').order_by('-created_at')[:20]
-    return render(request, 'admin/duyet_nhap_kho.html', {
+    return render(request, 'quan_ly/duyet_nhap_kho.html', {
         'transactions': pending_transactions,
         'logs': logs
     })
@@ -326,7 +326,7 @@ def admin_quan_ly_xuat_kho(request):
     pending_transactions = Transaction.objects.filter(status='PENDING', transaction_type='EXPORT')
     logs = ApprovalLog.objects.select_related('transaction', 'admin').filter(transaction__transaction_type='EXPORT').order_by('-created_at')[:20]
     
-    return render(request, 'admin/duyet_xuat_kho.html', {
+    return render(request, 'quan_ly/duyet_xuat_kho.html', {
         'transactions': pending_transactions,
         'logs': logs
     })
@@ -374,7 +374,7 @@ def thuong_phat(request):
 
     thuong_phats = Reward_Penalty.objects.all().order_by('tien_thuong_phat')
     
-    return render(request, 'admin/danh_sach_thuong_phat.html', {
+    return render(request, 'quan_ly/danh_sach_thuong_phat.html', {
         'form': form,
         'thuong_phats': thuong_phats
     })
@@ -393,7 +393,7 @@ def sua_thuong_phat(request, id):
             return redirect('danh_sach_thuong_phat')
     else:
         form = RewardForm(instance=loc)
-    return render(request, 'admin/sua_danh_sach_thuong_phat.html', {'form': form})
+    return render(request, 'quan_ly/sua_danh_sach_thuong_phat.html', {'form': form})
 
 def user_thuong_phat(request):
     thuong_phats = Reward_Penalty.objects.all().order_by('tien_thuong_phat') 
