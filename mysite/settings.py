@@ -1,3 +1,4 @@
+import dj_database_url
 """
 Django settings for mysite project.
 
@@ -80,14 +81,10 @@ WSGI_APPLICATION = 'mysite.wsgi.application'
 # https://docs.djangoproject.com/en/5.2/ref/settings/#databases
 
 DATABASES = {
-    'default': {
-    'ENGINE': 'django.db.backends.postgresql',
-    'NAME': 'tang_le',
-    'USER': 'postgres',   
-    'PASSWORD': '123456',
-    'HOST': 'localhost',
-    'PORT': '5432',
-    }
+    'default': dj_database_url.config(
+        default='sqlite:///db.sqlite3', 
+        conn_max_age=600
+    )
 }
 
 
