@@ -70,7 +70,7 @@ def admin_home(request):
     user = get_current_user(request)
     if not user or user.role_id.role_name.upper() != 'ADMIN':
         return redirect('login')
-    return render(request, 'quan-ly/home.html', {'user': user})
+    return render(request, 'quan_ly/home.html', {'user': user})
 
 def user_home(request):
     user = get_current_user(request)
@@ -88,7 +88,7 @@ def quan_ly_do_vat(request):
         form = Quan_ly_do_vat()
 
     do_vat = ServiceCategory.objects.all().order_by('category_name')
-    return render(request, 'quan-ly/quan_ly_do_vat.html', {
+    return render(request, 'quan_ly/quan_ly_do_vat.html', {
         'form': form,
         'do_vat': do_vat
     })    
