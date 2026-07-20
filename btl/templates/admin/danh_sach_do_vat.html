@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <title>Danh sách đồ vật</title>
+    <style>
+        body { font-family: 'Segoe UI', Arial; background: #f5f7fa; padding: 30px; }
+        .container { max-width: 1000px; margin: auto; background: #fff; padding: 30px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); }
+        h2 { color: #1e40af; text-align: center; }
+        
+        /* CSS Form chuyên nghiệp */
+        form { display: flex; flex-wrap: wrap; gap: 15px; background: #f8fafc; padding: 20px; border-radius: 8px; margin-bottom: 25px; align-items: flex-end; }
+        form p { margin: 0; display: flex; flex-direction: column; font-size: 13px; font-weight: 600; }
+        form input, form select { padding: 8px; border: 1px solid #cbd5e1; border-radius: 6px; }
+        form button { background: #2563eb; color: #fff; border: none; padding: 10px 20px; border-radius: 6px; cursor: pointer; height: 38px; }
+        
+        /* Table */
+        table { width: 100%; border-collapse: collapse; }
+        th, td { padding: 12px; border-bottom: 1px solid #e2e8f0; text-align: left; }
+        th { background: #1e40af; color: #fff; }
+        .action a { margin-right: 10px; color: #2563eb; text-decoration: none; }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h2>Danh sách đồ vật</h2>
+    <a href="{% url 'admin_home' %}" class="back-btn"> Trang điều khiển</a>
+    <form method="post">
+        {% csrf_token %}
+        {% for field in form %}
+            <p>{{ field.label_tag }} {{ field }}</p>
+        {% endfor %}
+        <button type="submit">Thêm</button>
+    </form>
+
+    <table>
+        <tr>
+            <th>STT</th>
+            <th>Tên đồ vật</th>
+            <th>Số lượng</th>
+            <th>Đơn vị</th>
+            <th>Loại</th>
+            <th>Vị trí</th>
+            <th>Thao tác</th>
+        </tr>
+        {% for item in do_vat %}
+        <tr>
+            <td>{{ forloop.counter }}</td>
+            <td>{{ item.item_name }}</td>
+            <td>{{ item.quantity }}</td>
+            <td>{{ item.unit }}</td>
+            <td>{{ item.category.category_name }}</td>
+            <td>{{ item.location.location_name }}</td>
+            <td class="action">
+                <a href="{% url 'sua_danh_sach_do_vat' item.item_id %}">Sửa</a>
+                <a href="{% url 'xoa_danh_sach_do_vat' item.item_id %}">Xóa</a>
+            </td>
+        </tr>
+        {% empty %}
+            <tr><td colspan="7" style="text-align:center;">Chưa có đồ vật nào.</td></tr>
+        {% endfor %}
+    </table>
+</div>
+</body>
+</html>

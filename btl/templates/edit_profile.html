@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8"><title>Cập nhật hồ sơ</title>
+  <style>
+    body{font-family:Segoe UI,Arial;background:#f5f7fa;margin:0;display:flex;justify-content:center;align-items:center;height:100vh}
+    .card{background:#fff;padding:30px 36px;border-radius:12px;box-shadow:0 10px 30px rgba(0,0,0,.1);width:440px}
+    h2{margin:0 0 16px}
+    label{display:block;margin:10px 0 6px;font-weight:600}
+    input,select,textarea{width:100%;padding:10px;border:1px solid #ccc;border-radius:8px;box-sizing:border-box}
+    .btn{width:100%;padding:12px;margin-top:16px;background:#2f6fed;color:#fff;border:none;border-radius:8px;cursor:pointer}
+    .back{display:inline-block;margin-top:10px;text-decoration:none}
+    .errors{color:#b42318;margin:8px 0 0}
+  </style>
+</head>
+<body>
+  <div class="card">
+    <h2>Cập nhật hồ sơ</h2>
+
+    <form method="post" action="{% url 'edit_profile' %}">
+      {% csrf_token %}
+
+      {% if form.non_field_errors %}
+        <div class="errors">{{ form.non_field_errors }}</div>
+      {% endif %}
+
+      {{ form.as_p }}
+
+      <button class="btn" type="submit">Lưu thay đổi</button>
+    </form>
+
+    <a class="back" href="{% url 'profile' %}"> Quay lại trang cá nhân</a>
+  </div>
+</body>
+</html>

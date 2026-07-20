@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<title>Danh sách kho đồ</title>
+<style>
+    body {font-family: 'Segoe UI', Arial; background: #f5f7fa; margin: 0; padding: 30px;}
+    .container {max-width: 900px; margin: auto; background: #fff; padding: 28px 36px; border-radius: 12px; box-shadow: 0 8px 28px rgba(0,0,0,.08);}
+    h2 {text-align: center; color: #1e40af; margin-bottom: 16px;}
+    .topbar {display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;}
+    .back-btn {background: #e9edf7; color: #1e3a8a; padding: 10px 14px; border-radius: 8px; text-decoration: none; font-weight: 600;}
+    .back-btn:hover {background: #dbe3f2;}
+    table {width: 100%; border-collapse: collapse; margin-top: 12px;}
+    th, td {padding: 12px; border-bottom: 1px solid #e2e8f0; text-align: left;}
+    th {background: #1e40af; color: #fff;}
+    tr:hover {background: #f8fafc;}
+</style>
+</head>
+<body>
+<div class="container">
+    <div class="topbar">
+        <a href="{% url 'user_home' %}" class="back-btn">Trang điều khiển</a>
+        <h2>Danh sách kho đồ</h2>
+        <div style="width: 120px;"></div> </div>
+
+    <table>
+        <thead>
+            <tr>
+                <th>STT</th>
+                <th>Tên đồ vật</th>
+                <th>Loại</th>
+                <th>Vị trí</th>
+                <th>Số lượng</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for item in do_vat %}
+            <tr>
+                <td>{{ forloop.counter }}</td>
+                <td>{{ item.item_name }}</td>
+                <td>{{ item.category.category_name }}</td>
+                <td>{{ item.location.location_name }}</td>
+                <td>{{ item.quantity }}</td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="5" style="text-align: center;">Chưa có dữ liệu đồ vật trong kho.</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+</body>
+</html>

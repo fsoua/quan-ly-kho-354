@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<title>Duyệt nhập kho</title>
+<style>
+    body {font-family: 'Segoe UI', Arial; background: #f5f7fa; padding: 30px;}
+    .container {max-width: 1000px; margin: auto; background: #fff; padding: 28px; border-radius: 12px; box-shadow: 0 8px 28px rgba(0,0,0,.08);}
+    .topbar {display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;}
+    .back-btn {background: #e9edf7; color: #1e3a8a; padding: 10px 14px; border-radius: 8px; text-decoration: none; font-weight: 600;}
+    
+    table {width: 100%; border-collapse: collapse; margin-bottom: 40px;}
+    th, td {padding: 12px; border-bottom: 1px solid #e2e8f0; text-align: left;}
+    th {background: #1e40af; color: #fff;}
+    
+    .btn-approve {background: #22c55e; color: white; padding: 6px 12px; border-radius: 6px; text-decoration: none;}
+    .btn-reject {background: #ef4444; color: white; padding: 6px 12px; border-radius: 6px; text-decoration: none;}
+    h3 {color: #1e40af; border-left: 4px solid #1e40af; padding-left: 10px;}
+</style>
+</head>
+<body>
+<div class="container">
+    <div class="topbar">
+        <a href="{% url 'admin_home' %}" class="back-btn">Trang điều khiển</a>
+        <h2>Quản lý duyệt xuất kho</h2>
+    </div>
+
+    <h3>Yêu cầu chờ duyệt</h3>
+    <table>
+        <tr>
+            <th>Người yêu cầu</th>
+            <th>Đồ vật</th>
+            <th>Số lượng</th>
+            <th>Ghi chú</th>
+            <th>Thao tác</th>
+        </tr>
+        {% for t in transactions %}
+        <tr>
+            <td>{{ t.user.full_name }}</td>
+            <td>{{ t.item.item_name }}</td>
+            <td>{{ t.quantity }}</td>
+            <td>{{ t.note }}</td>
+            <td>
+                <a href="{% url 'admin_set_transaction_status_xuat' t.transaction_id 'approve' %}" class="btn-approve">Duyệt</a>
+                <a href="{% url 'admin_set_transaction_status_xuat' t.transaction_id 'reject' %}" class="btn-reject">Từ chối</a>
+            </td>
+        </tr>
+        {% endfor %}
+    </table>
+
+    <h3>Lịch sử thao tác của Admin</h3>
+    <table>
+        <tr>
+            <th>Admin thực hiện</th>
+            <th>Đồ vật</th>
+            <th>Số lượng</th>
+            <th>Hành động</th>
+            <th>Thời gian</th>
+        </tr>
+        {% for log in logs %}
+        <tr>
+            <td>{{ log.admin.full_name }}</td>
+            <td>{{ log.transaction.item.item_name }}</td>
+            <td>{{ log.transaction.quantity }}</td>
+            <td>{{ log.get_action_display }}</td>
+            <td>{{ log.created_at|date:"d/m/Y H:i" }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+</div>
+</body>
+</html>

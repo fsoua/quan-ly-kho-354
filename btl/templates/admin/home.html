@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <title>Trang chủ Admin</title>
+  <style>
+    body{font-family:Segoe UI,Arial;background:#eef3fb;margin:0;min-height:100vh;display:flex;justify-content:center;align-items:center}
+    .wrap{background:#fff;padding:32px 40px;border-radius:14px;box-shadow:0 12px 30px rgba(0,0,0,.1);width:680px}
+    h2{margin:0 0 6px;text-align:center}
+    p{margin:0 0 16px;text-align:center;color:#667085}
+    .grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin-top:10px}
+    a.btn{display:flex;align-items:center;justify-content:center;padding:14px;border-radius:10px;text-decoration:none;font-weight:600;border:1px solid transparent}
+    .primary{background:#2f6fed;color:#fff}
+    .ghost{background:#e9edf7;color:#334}
+    .outline{background:#fff;color:#2f6fed;border-color:#2f6fed}
+    .row{display:flex;gap:10px;justify-content:center;margin-top:16px}
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <h2>Bảng điều khiển Admin</h2>
+    <p>Xin chào, <b>{{ user.full_name }}</b> • Vai trò: <b>{{ user.role_id.role_name }}</b></p>
+
+    <div class="grid">
+
+      <a class="outline btn" href="{% url 'quan_ly_do_vat' %}">Quản lý loại đồ vật</a>
+      
+      <a class="outline btn" href="{% url 'noi_de_do' %}">Quản lý nơi để đồ</a>
+
+      <a class="outline btn" href="{% url 'danh_sach_do_vat' %}">Quản lý danh sách đồ vật</a>
+
+      <a class="outline btn" href="{% url 'admin_notifications' %}">Quản lý thông báo</a>
+
+      <a class="outline btn" href="{% url 'admin_quan_ly_nhap_kho' %}">Quản lý yêu cầu nhập kho</a>
+
+      <a class="outline btn" href="{% url 'admin_quan_ly_xuat_kho' %}">Quản lý yêu cầu xuất kho</a>
+
+      <a class="outline btn" href="{% url 'danh_sach_thuong_phat' %}">Quản lý danh sách thưởng phạt</a>
+
+    </div>
+
+
+    <div class="row">
+      <a class="ghost btn" href="{% url 'logout' %}">Đăng xuất</a>
+    </div>
+  </div>
+</body>
+</html>

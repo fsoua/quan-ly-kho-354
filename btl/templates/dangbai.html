@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <title>Đăng bài</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', Arial;
+      background-color: #f5f7fa;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+    }
+    .card {
+      background: #fff;
+      padding: 36px 40px;
+      border-radius: 12px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, .1);
+      width: 480px;
+    }
+    h2 {
+      text-align: center;
+      margin-top: 0;
+      color: #2f6fed;
+    }
+    label {
+      font-weight: 600;
+      margin-top: 10px;
+      display: block;
+      color: #333;
+    }
+    input, select, textarea {
+      width: 100%;
+      padding: 10px;
+      margin-top: 5px;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+      box-sizing: border-box;
+      font-size: 14px;
+    }
+    button {
+      width: 100%;
+      padding: 12px;
+      margin-top: 20px;
+      background-color: #2f6fed;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 15px;
+    }
+    button:hover {
+      background-color: #1d4ed8;
+    }
+    a {
+      display: block;
+      text-align: center;
+      margin-top: 10px;
+      color: #2f6fed;
+      text-decoration: none;
+    }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <h2>Đăng bài nhặt / mất đồ</h2>
+    <form method="post">
+      {% csrf_token %}
+      {{ form.as_p }}
+      <button type="submit">Đăng bài</button>
+    </form>
+  </div>
+</body>
+</html>

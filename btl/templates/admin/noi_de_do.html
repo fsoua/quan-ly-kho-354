@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<title>Quản lý Địa điểm</title>
+<style>
+body{font-family:'Segoe UI',Arial;background:#f5f7fa;margin:0;padding:30px}
+.container{max-width:900px;margin:auto;background:#fff;padding:28px 36px;border-radius:12px;box-shadow:0 8px 28px rgba(0,0,0,.08)}
+h2{text-align:center;color:#1e40af;margin-bottom:16px}
+.topbar{display:flex;justify-content:space-between;align-items:center;margin-bottom:20px}
+.back-btn{background:#e9edf7;color:#1e3a8a;padding:10px 14px;border-radius:8px;text-decoration:none;font-weight:600}
+.back-btn:hover{background:#dbe3f2}
+form{margin-bottom:24px;display:flex;gap:10px;justify-content:center}
+input[type="text"]{padding:10px;border:1px solid #ccc;border-radius:8px;flex:1}
+button{background:#2563eb;color:#fff;border:none;padding:10px 16px;border-radius:8px;cursor:pointer}
+button:hover{background:#1d4ed8}
+table{width:100%;border-collapse:collapse;margin-top:12px}
+th,td{padding:12px;border-bottom:1px solid #e2e8f0}
+th{background:#1e40af;color:#fff;text-align:left}
+tr:hover{background:#f8fafc}
+a{text-decoration:none;color:#2563eb;font-weight:500}
+a:hover{text-decoration:underline}
+.action{display:flex;gap:8px}
+</style>
+</head>
+<body>
+<div class="container">
+  <div class="topbar">
+    <h2>Quản lý nơi để đồ</h2>
+    <a href="{% url 'admin_home' %}" class="back-btn"> Trang điều khiển</a>
+  </div>
+
+  <form method="post">
+    {% csrf_token %}
+    {{ form.location_name }}
+    <button type="submit">Thêm</button>
+  </form>
+
+  <table>
+    <tr>
+      <th>STT</th>
+      <th>Tên nơi để đồ</th>
+      <th>Thao tác</th>
+    </tr>
+    {% for d in noi_de_dos %}
+    <tr>
+      <td>{{ forloop.counter }}</td>
+      <td>{{ d.location_name }}</td>
+      <td class="action">
+        <a href="{% url 'sua_noi_de_do' d.location_id %}">Sửa</a>
+        <a href="{% url 'xoa_noi_de_do' d.location_id %}">Xóa</a>
+      </td>
+    </tr>
+    {% empty %}
+      <tr><td colspan="3">Chưa có nơi để đồ nào.</td></tr>
+    {% endfor %}
+  </table>
+</div>
+</body>
+</html>

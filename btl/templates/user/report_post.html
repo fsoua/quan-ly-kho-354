@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <title>Báo cáo bài viết</title>
+  <style>
+    body{
+      font-family:'Segoe UI',Arial;
+      background:#f5f7fa;
+      margin:0;
+      padding:40px;
+      display:flex;
+      justify-content:center;
+      align-items:flex-start;
+    }
+    .card{
+      background:#fff;
+      padding:24px 28px;
+      border-radius:12px;
+      box-shadow:0 8px 24px rgba(15,23,42,.12);
+      max-width:520px;
+      width:100%;
+    }
+    h2{margin:0 0 8px;color:#1d4ed8}
+    p{margin:0 0 16px;color:#64748b}
+    label{display:block;font-weight:600;margin-bottom:6px}
+    textarea{
+      width:100%;
+      min-height:120px;
+      resize:vertical;
+      padding:8px 10px;
+      border-radius:8px;
+      border:1px solid #cbd5e1;
+      font-family:inherit;
+      font-size:14px;
+    }
+    .actions{
+      margin-top:16px;
+      display:flex;
+      gap:10px;
+      justify-content:flex-end;
+    }
+    .btn{
+      padding:8px 14px;
+      border-radius:8px;
+      font-weight:600;
+      text-decoration:none;
+      border:1px solid transparent;
+      cursor:pointer;
+    }
+    .btn-primary{
+      background:#ef4444;
+      color:#fff;
+    }
+    .btn-ghost{
+      background:#e5e7eb;
+      color:#111827;
+    }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <h2>Báo cáo bài viết</h2>
+    <p>Bạn đang báo cáo bài: <b>{{ post.title }}</b></p>
+
+    <form method="post">
+      {% csrf_token %}
+      <label for="reason">Lý do báo cáo</label>
+      <textarea id="reason" name="reason" placeholder="Nhập lý do bạn muốn báo cáo bài viết này..."></textarea>
+
+      <div class="actions">
+        <a href="{% url 'user_home' %}" class="btn btn-ghost">Hủy</a>
+        <button type="submit" class="btn btn-primary">Gửi báo cáo</button>
+      </div>
+    </form>
+  </div>
+</body>
+</html>

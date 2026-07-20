@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8"><title>Xin chào</title>
+  <style>
+    body{font-family:Segoe UI,Arial;background:#eef3fb;margin:0;display:flex;justify-content:center;align-items:center;height:100vh}
+    .box{background:#fff;padding:30px 36px;border-radius:12px;box-shadow:0 10px 30px rgba(0,0,0,.1);width:520px;text-align:center}
+    h2{margin:0 0 10px}
+    p{margin:6px 0}
+    .row{display:flex;gap:10px;justify-content:center;margin-top:16px;flex-wrap:wrap}
+    a,button{display:inline-block;padding:10px 14px;border-radius:8px;text-decoration:none;font-weight:600;border:1px solid transparent}
+    .primary{background:#2f6fed;color:#fff}
+    .ghost{background:#e9edf7;color:#334}
+    .outline{background:#fff;color:#2f6fed;border-color:#2f6fed}
+  </style>
+</head>
+<body>
+  <div class="box">
+    <h2>Xin chào, {{ user.full_name }}</h2>
+    <p>Email: <b>{{ user.email }}</b></p>
+    <p>Vai trò: <b>{{ user.role_id.role_name }}</b></p>
+
+    <div class="row">
+      <a class="primary" href="{% url 'edit_profile' %}">Thay đổi thông tin cá nhân</a>
+
+      {% if user.role_id.role_name|upper == 'ADMIN' %}
+        <a class="primary" href="{% url 'admin_home' %}">Trang tiếp</a>
+      {% else %}
+        <a class="primary" href="{% url 'user_home' %}">Trang tiếp</a>
+      {% endif %}
+      <a class="ghost" href="{% url 'logout' %}">Đăng xuất</a>
+</body>
+</html>

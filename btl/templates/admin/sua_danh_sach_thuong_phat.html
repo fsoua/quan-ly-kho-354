@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<title>Sửa Địa điểm</title>
+<style>
+body{font-family:'Segoe UI',Arial;background:#f1f5f9;display:flex;justify-content:center;align-items:center;height:100vh;margin:0}
+.card{background:#fff;padding:32px 40px;border-radius:12px;box-shadow:0 10px 30px rgba(0,0,0,.1);width:400px;text-align:center}
+h2{color:#1e3a8a;margin-bottom:20px}
+input[type="text"]{width:100%;padding:10px;border:1px solid #ccc;border-radius:8px}
+button,a{display:inline-block;margin-top:14px;padding:10px 16px;border-radius:8px;text-decoration:none;font-weight:600}
+button{background:#2563eb;color:#fff;border:none;cursor:pointer}
+button:hover{background:#1d4ed8}
+a{background:#e2e8f0;color:#111827}
+a:hover{background:#cbd5e1}
+.back{display:block;margin-top:20px;color:#2563eb;text-decoration:none}
+.back:hover{text-decoration:underline}
+</style>
+</head>
+<body>
+<div class="card">
+  <h2>Sửa danh sách thưởng phạt</h2>
+  <form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}  <div>
+      <button type="submit">Lưu</button>
+      <a href="{% url 'danh_sach_thuong_phat' %}">Hủy</a>
+    </div>
+  </form>
+  <a href="{% url 'admin_home' %}" class="back"> Quay lại Trang điều khiển</a>
+</div>
+</body>
+</html>

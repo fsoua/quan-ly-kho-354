@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <title>Quản lý thông báo</title>
+  <style>
+    body{font-family:'Segoe UI',Arial;background:#eef3fb;margin:0;padding:40px;}
+    h2{text-align:center;color:#1d4ed8;margin-bottom:18px;}
+    table{border-collapse:collapse;width:90%;margin:20px auto;background:#fff;
+          border-radius:12px;overflow:hidden;box-shadow:0 6px 20px rgba(0,0,0,.1);}
+    th,td{padding:10px 14px;border-bottom:1px solid #e5e7eb;font-size:14px;}
+    th{background:#1d4ed8;color:#fff;text-align:left;}
+    tr:hover{background:#f1f5ff;}
+    .btn-del{background:#ef4444;color:#fff;padding:4px 10px;border-radius:6px;
+             text-decoration:none;font-size:13px;}
+    .btn-back{display:inline-block;padding:8px 14px;background:#1d4ed8;color:white;
+              text-decoration:none;border-radius:8px;margin-bottom:25px;}
+    .form-box{width:90%;margin:auto;background:white;padding:20px;border-radius:12px;
+              box-shadow:0 6px 20px rgba(0,0,0,.1);}
+    input,select,textarea{width:100%;padding:8px;border:1px solid #d1d5db;
+                          border-radius:6px;margin-top:6px;margin-bottom:14px;}
+    button{padding:8px 14px;background:#2563eb;color:#fff;border:none;border-radius:6px;
+           cursor:pointer;font-weight:600;}
+  </style>
+</head>
+<body>
+
+  <a href="{% url 'admin_home' %}" class="btn-back">← Trang điều khiển</a>
+  <h2>Quản lý thông báo</h2>
+
+  <div class="form-box">
+    <form method="POST" action="{% url 'admin_send_notification' %}">
+      {% csrf_token %}
+      <label>Gửi tới người dùng:</label>
+      <select name="user_id" required>
+        <option value="">-- Chọn người nhận --</option>
+        {% for u in users %}
+          <option value="{{ u.user_id }}">{{ u.full_name }}</option>
+        {% endfor %}
+      </select>
+
+      <label>Tiêu đề:</label>
+      <input type="text" name="title" required>
+
+      <label>Nội dung:</label>
+      <textarea name="content" rows="3" required></textarea>
+
+      <button type="submit">Gửi thông báo</button>
+    </form>
+  </div>
+
+  <h2 style="margin-top:40px;">Danh sách thông báo</h2>
+
+  <table>
+    <tr>
+      <th>ID</th>
+      <th>Người nhận</th>
+      <th>Tiêu đề</th>
+      <th>Nội dung</th>
+      <th>Xóa</th>
+      <th>Sửa</th>
+    </tr>
+
+    {% for n in notifications %}
+      <tr>
+        <td>{{ n.notification_id }}</td>
+        <td>{{ n.user.full_name }}</td>
+        <td>{{ n.title }}</td>
+        <td>{{ n.content }}</td>
+        <td><a class="btn-del" href="{% url 'admin_delete_notification' n.notification_id %}">Xóa</a></td>
+        <td><a class="btn-del" href="{% url 'admin_edit_notification' n.notification_id %}">Sửa</a></td>
+      </tr>
+    {% empty %}
+      <tr><td colspan="6" style="text-align:center;padding:12px;">Chưa có thông báo nào.</td></tr>
+    {% endfor %}
+  </table>
+
+</body>
+</html>

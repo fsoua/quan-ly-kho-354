@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<title>Thông báo</title>
+<style>
+    body {font-family: 'Segoe UI', Arial; background: #f5f7fa; margin: 0; padding: 30px;}
+    .container {max-width: 900px; margin: auto; background: #fff; padding: 28px 36px; border-radius: 12px; box-shadow: 0 8px 28px rgba(0,0,0,.08);}
+    
+    .topbar {display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;}
+    h2 {color: #1e40af; margin: 0;}
+    
+    .back-btn {background: #e9edf7; color: #1e3a8a; padding: 10px 14px; border-radius: 8px; text-decoration: none; font-weight: 600;}
+    .back-btn:hover {background: #dbe3f2;}
+
+    ul {list-style: none; padding: 0;}
+    li {
+        padding: 16px;
+        margin-bottom: 12px;
+        border-radius: 8px;
+        background: #f8fafc;
+        border-left: 4px solid #1e40af;
+        box-shadow: 0 2px 4px rgba(0,0,0,.05);
+    }
+    li b {display: block; margin-bottom: 5px; color: #1e40af; font-size: 1.1em;}
+    li span {color: #475569;}
+    .empty-msg {text-align: center; color: #64748b; padding: 20px;}
+</style>
+</head>
+<body>
+
+<div class="container">
+    <div class="topbar">
+        <a href="{% url 'user_home' %}" class="back-btn">Trang điều khiển</a>
+        <h2>Thông báo của bạn</h2>
+        <div style="width: 130px;"></div> 
+    </div>
+
+    <ul>
+      {% for n in notifications %}
+        <li>
+          <b>{{ n.title }}</b>
+          <span>{{ n.content }}</span>
+        </li>
+      {% empty %}
+        <li class="empty-msg">Hiện tại bạn không có thông báo nào.</li>
+      {% endfor %}
+    </ul>
+</div>
+
+</body>
+</html>
