@@ -474,3 +474,11 @@ def tao_hop_dong(request):
 def danh_sach_hop_dong(request):
     hop_dongs = Contract.objects.all().order_by('-contract_id')
     return render(request, 'quan_ly/danh_sach_hop_dong.html', {'hop_dongs': hop_dongs})
+
+def chi_tiet_hop_dong(request, contract_id):
+    contract = get_object_or_404(Contract, pk=contract_id)
+    details = contract.details.select_related('inventory_item').all()
+    return render(request, 'quan_ly/chi_tiet_hop_dong.html', {
+        'contract': contract,
+        'details': details
+    })
