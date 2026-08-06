@@ -55,7 +55,9 @@
                 <td>
                     <a href="{% url 'xoa_hop_dong' hd.contract_id %}">Xóa</a>
                 </td>
-                <tr>
+            <tr>
+            {% empty %}
+            <tr>
                 <td colspan="7" style="text-align: center;">Chưa có hợp đồng nào được tạo.</td>
             </tr>
             {% endfor %}
