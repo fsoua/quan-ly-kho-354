@@ -470,3 +470,7 @@ def tao_hop_dong(request):
         return redirect('tao_hop_dong')
 
     return render(request, 'user/tao_hop_dong.html', {'do_vat': do_vat})
+
+def danh_sach_hop_dong(request):
+    hop_dongs = Contract.objects.all().order_by('-contract_id')
+    return render(request, 'quan_ly/danh_sach_hop_dong.html', {'hop_dongs': hop_dongs})

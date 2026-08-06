@@ -44,4 +44,5 @@ urlpatterns = [
     path('user/danh_sach_thuong_phat/', views.user_thuong_phat, name='user_thuong_phat'),
 
     path('user/tao_hop_dong/', views.tao_hop_dong, name='tao_hop_dong'),
+    path('quan_ly/hop_dong/', views.danh_sach_hop_dong, name='danh_sach_hop_dong'),
 ]
