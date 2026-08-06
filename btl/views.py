@@ -419,7 +419,7 @@ def tao_hop_dong(request):
             thang=thang,
             nam=nam,
             dt_kho=dt_kho,
-            nhan_vien_id=user,
+            nhan_vien=user,
             tong_tien_ban=0,
             tong_tien_nhap=0,
             tong_tien_lai=0
