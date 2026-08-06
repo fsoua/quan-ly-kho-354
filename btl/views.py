@@ -4,6 +4,8 @@ from .models import User, Role, ServiceCategory, Report, Notification, StorageLo
 from .forms import InsertUserForm, UpdateUserForm, Quan_ly_do_vat, Noi_de_do, InventoryItemForm, NotificationForm, RewardForm
 from django.views.decorators.csrf import csrf_exempt
 from django.db import transaction
+from django.db.models import Sum
+from django.db.models.functions import TruncMonth
 
 def register(request):
     if request.method == 'POST':
@@ -481,3 +483,36 @@ def xoa_hop_dong(request, contract_id):
     contract = get_object_or_404(Contract, pk=contract_id)
     contract.delete()
     return redirect('danh_sach_hop_dong')
+
+def bieu_do_lai_suat(request):
+    start_date = request.GET.get('start_date')
+    end_date = request.GET.get('end_date')
+    
+    contracts = Contract.objects.all()
+    
+    if start_date:
+        contracts = contracts.filter(created_at__gte=start_date)
+    if end_date:
+        contracts = contracts.filter(created_at__lte=end_date)
+        
+    chart_data = (
+        contracts.annotate(month=TruncMonth('created_at'))
+        .values('month')
+        .annotate(total_lai=Sum('tong_tien_lai'))
+        .order_by('month')
+    )
+    
+    months = []
+    profits = []
+    for entry in chart_data:
+        if entry['month']:
+            months.append(entry['month'].strftime('%m/%Y'))
+            profits.append(entry['total_lai'] or 0)
+            
+    context = {
+        'months': months,
+        'profits': profits,
+        'start_date': start_date,
+        'end_date': end_date,
+    }
+    return render(request, 'quan_ly/bieu_do_lai_suat.html', context)
