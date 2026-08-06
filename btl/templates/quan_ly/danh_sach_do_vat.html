@@ -41,9 +41,9 @@
             <th>Đơn vị</th>
             <th>Loại</th>
             <th>Vị trí</th>
-            <th>Thao tác</th>
             <th>Giá nhập</th>
             <th>Giá bán</th>
+            <th>Thao tác</th>
         </tr>
         {% for item in do_vat %}
         <tr>
@@ -53,8 +53,8 @@
             <td>{{ item.unit }}</td>
             <td>{{ item.category.category_name }}</td>
             <td>{{ item.location.location_name }}</td>
-            <td>{{ item.location.gia_nhap }}</td>
-            <td>{{ item.location.gia_ban }}</td>
+            <td>{{ item.gia_nhap }}</td>
+            <td>{{ item.gia_ban }}</td>
             <td class="action">
                 <a href="{% url 'sua_danh_sach_do_vat' item.item_id %}">Sửa</a>
                 <a href="{% url 'xoa_danh_sach_do_vat' item.item_id %}">Xóa</a>
