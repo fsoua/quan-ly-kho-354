@@ -50,11 +50,11 @@
                 <td>{{ hd.nhan_vien_id.full_name }}</td>
                 <td>{{ hd.tong_tien_ban|floatformat:0 }} VNĐ</td>
                 <td>{{ hd.tong_tien_nhap|floatformat:0 }} VNĐ</td>
-                <td class="profit">+{{ hd.tong_tien_lai|floatformat:0 }} VNĐ</td>
+                <td class="profit">{{ hd.tong_tien_lai|floatformat:0 }} VNĐ</td>
                 <td>
                     <a href="{% url 'chi_tiet_hop_dong' hd.contract_id %}" class="btn-detail">Chi tiết</a>
                 </td>
-                <td> <a href="{% url 'xoa_hop_dong', hd.contract_id %}">Xóa</a> </td>
+                <td> <a href="{% url 'xoa_hop_dong' hd.contract_id %}">Xóa</a> </td>
             </tr>
             {% empty %}
             <tr>
