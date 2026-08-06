@@ -57,13 +57,15 @@ class NotificationForm(forms.ModelForm):
 class InventoryItemForm(forms.ModelForm):
     class Meta:
         model = InventoryItem
-        fields = ['item_name', 'category', 'location', 'quantity', 'unit']
+        fields = ['item_name', 'category', 'location', 'quantity', 'unit', 'gia_nhap', 'gia_ban']
         labels = {
             'item_name': 'Tên đồ vật',
             'category': 'Danh mục',
             'location': 'Vị trí lưu trữ',
             'quantity': 'Số lượng',
             'unit': 'Đơn vị tính',
+            'gia_nhap': 'Giá nhập',
+            'gia_ban': 'Giá bán',
         }
 
 class RewardForm(forms.ModelForm):
