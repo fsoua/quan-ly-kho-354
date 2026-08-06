@@ -55,7 +55,7 @@
                     <a href="{% url 'chi_tiet_hop_dong' hd.contract_id %}" class="btn-detail">Chi tiết</a>
                 </td>
                 </td>
-                <a href="{% url 'xoa_hop_dong' hd.contract_id %}">Xóa</a>
+                <a href="{% url 'xoa_hop_dong', hd.contract_id %}">Xóa</a>
                 </td>
             </tr>
             {% empty %}
