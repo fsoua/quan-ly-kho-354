@@ -4,15 +4,18 @@
     <meta charset="UTF-8">
     <title>Tạo Hợp Đồng Phục Vụ Tang Lễ</title>
     <style>
-        body { font-family: Arial, sans-serif; margin: 20px; }
-        .container { max-width: 900px; margin: 0 auto; }
-        h2 { text-align: center; }
-        .header-info { margin-bottom: 20px; display: flex; gap: 20px; align-items: center; }
+        body { font-family: Arial, sans-serif; margin: 20px; background-color: #f9f9f9; }
+        .container { max-width: 950px; margin: 0 auto; background: #fff; padding: 20px; border-radius: 8px; box-shadow: 0 0 10px rgba(0,0,0,0.1); }
+        h2 { text-align: center; color: #333; }
+        .header-info { display: flex; flex-wrap: wrap; gap: 15px; margin-bottom: 20px; align-items: center; justify-content: space-between; background: #f1f1f1; padding: 15px; border-radius: 5px; }
+        .header-info div { font-weight: bold; }
+        .header-info input { padding: 5px; border: 1px solid #ccc; border-radius: 4px; }
         table { width: 100%; border-collapse: collapse; margin-top: 10px; }
-        th, td { border: 1px solid #000; padding: 8px; text-align: center; }
-        th { background-color: #f2f2f2; }
-        td input[type="number"] { width: 60px; text-align: center; padding: 4px; }
-        .btn-submit { margin-top: 20px; padding: 10px 20px; background-color: #007bff; color: white; border: none; cursor: pointer; font-size: 16px; }
+        th, td { border: 1px solid #ddd; padding: 8px; text-align: center; }
+        th { background-color: #007bff; color: white; }
+        td input[type="number"] { width: 70px; text-align: center; padding: 5px; border: 1px solid #ccc; border-radius: 4px; }
+        .btn-submit { display: block; width: 100%; margin-top: 20px; padding: 12px; background-color: #28a745; color: white; border: none; border-radius: 5px; cursor: pointer; font-size: 18px; font-weight: bold; text-align: center; }
+        .btn-submit:hover { background-color: #218838; }
     </style>
 </head>
 <body>
@@ -22,10 +25,10 @@
     <form method="POST">
         {% csrf_token %}
         <div class="header-info">
-            <div>Họ tên người mất: <input type="text" name="ten_nguoi_mat" placeholder="Nhập tên người mất" required></div>
-            <div>NQ: <input type="text" name="nq" style="width: 80px;" placeholder="6h30"></div>
-            <div>Ngày: <input type="text" name="ngay" style="width: 40px;" value="28"> Thắng: <input type="text" name="thang" style="width: 40px;" value="08"> Năm: <input type="text" name="nam" style="width: 60px;" value="2025"></div>
-            <div>ĐT Kho: <input type="text" name="dt_kho" value="0816788883"></div>
+            <div>Họ tên người mất: <input type="text" name="ten_nguoi_mat" placeholder="Nhập tên người mất" required style="width: 180px;"></div>
+            <div>NQ: <input type="text" name="nq" style="width: 70px;" placeholder="6h30"></div>
+            <div>Ngày: <input type="text" name="ngay" style="width: 40px;" value="28"> Tháng: <input type="text" name="thang" style="width: 40px;" value="08"> Năm: <input type="text" name="nam" style="width: 55px;" value="2025"></div>
+            <div>ĐT Kho: <input type="text" name="dt_kho" value="0816788883" style="width: 100px;"></div>
         </div>
 
         <table>
@@ -36,7 +39,6 @@
                     <th>Đơn vị</th>
                     <th>Đơn giá</th>
                     <th>Số lượng</th>
-                    <th>Thành tiền</th>
                 </tr>
             </thead>
             <tbody>
@@ -45,22 +47,20 @@
                     <td>{{ forloop.counter }}</td>
                     <td style="text-align: left; padding-left: 10px;">{{ item.item_name }}</td>
                     <td>{{ item.unit }}</td>
-                    <td>{{ item.gia_ban|floatformat:0 }}</td>
+                    <td>{{ item.gia_ban|floatformat:0 }} VNĐ</td>
                     <td>
-                        <!-- Input truyền số lượng cho từng item theo ID -->
                         <input type="number" name="qty_{{ item.item_id }}" value="0" min="0" step="any">
                     </td>
-                    <td></td>
                 </tr>
                 {% empty %}
                 <tr>
-                    <td colspan="6" style="text-align: center;">Chưa có dữ liệu đồ vật trong kho.</td>
+                    <td colspan="5" style="text-align: center;">Chưa có dữ liệu đồ vật trong kho.</td>
                 </tr>
                 {% endfor %}
             </tbody>
         </table>
 
-        <button type="submit" class="btn-submit">Lưu & In Hợp Đồng</button>
+        <button type="submit" class="btn-submit">Lưu Hợp Đồng</button>
     </form>
 </div>
 </body>

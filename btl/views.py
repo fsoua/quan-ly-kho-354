@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
-from .models import User, Role, ServiceCategory, Report, Notification, StorageLocation, InventoryItem, Combo, Transaction, ApprovalLog, Reward_Penalty
+from .models import User, Role, ServiceCategory, Report, Notification, StorageLocation, InventoryItem, Combo, Transaction, ApprovalLog, Reward_Penalty, Contract, ContractDetail
 from .forms import InsertUserForm, UpdateUserForm, Quan_ly_do_vat, Noi_de_do, InventoryItemForm, NotificationForm, RewardForm
 from django.views.decorators.csrf import csrf_exempt
 from django.db import transaction
@@ -407,4 +407,66 @@ def tao_hop_dong(request):
     if request.method == 'POST':
         return redirect('tao_hop_dong')
         
+    return render(request, 'user/tao_hop_dong.html', {'do_vat': do_vat})
+
+def tao_hop_dong(request):
+    do_vat = InventoryItem.objects.select_related('category', 'location').order_by('item_id')
+    
+    if request.method == 'POST':
+        ten_nguoi_mat = request.POST.get('ten_nguoi_mat')
+        nq = request.POST.get('nq')
+        ngay = request.POST.get('ngay')
+        thang = request.POST.get('thang')
+        nam = request.POST.get('nam')
+        dt_kho = request.POST.get('dt_kho')
+        contract = Contract.objects.create(
+            ten_nguoi_mat=ten_nguoi_mat,
+            nq=nq,
+            ngay=ngay,
+            thang=thang,
+            nam=nam,
+            dt_kho=dt_kho,
+            tong_tien_ban=0,
+            tong_tien_nhap=0,
+            tong_tien_lai=0
+        )
+
+        tong_ban = 0
+        tong_nhap = 0
+
+        for item in do_vat:
+            qty_str = request.POST.get(f'qty_{item.item_id}', '0')
+            try:
+                quantity = float(qty_str) if '.' in qty_str else int(qty_str)
+            except ValueError:
+                quantity = 0
+
+            if quantity > 0:
+                gia_ban = item.gia_ban
+                gia_nhap = item.gia_nhap
+                
+                thanh_tien_ban = gia_ban * quantity
+                thanh_tien_nhap = gia_nhap * quantity
+
+                tong_ban += thanh_tien_ban
+                tong_nhap += thanh_tien_nhap
+
+                ContractDetail.objects.create(
+                    contract=contract,
+                    inventory_item=item,
+                    quantity=quantity,
+                    gia_ban_thuc_te=gia_ban,
+                    gia_nhap_thuc_te=gia_nhap
+                )
+
+                item.quantity -= quantity
+                item.save()
+
+        contract.tong_tien_ban = int(tong_ban)
+        contract.tong_tien_nhap = int(tong_nhap)
+        contract.tong_tien_lai = int(tong_ban - tong_nhap)
+        contract.save()
+
+        return redirect('tao_hop_dong')
+
     return render(request, 'user/tao_hop_dong.html', {'do_vat': do_vat})
