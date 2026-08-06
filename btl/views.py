@@ -402,16 +402,9 @@ def user_thuong_phat(request):
     })
 
 def tao_hop_dong(request):
-    do_vat = InventoryItem.objects.all().order_by('item_id')
-    
-    if request.method == 'POST':
-        return redirect('tao_hop_dong')
-        
-    return render(request, 'user/tao_hop_dong.html', {'do_vat': do_vat})
-
-def tao_hop_dong(request):
+    user = get_current_user(request)
     do_vat = InventoryItem.objects.select_related('category', 'location').order_by('item_id')
-    
+
     if request.method == 'POST':
         ten_nguoi_mat = request.POST.get('ten_nguoi_mat')
         nq = request.POST.get('nq')
@@ -426,7 +419,7 @@ def tao_hop_dong(request):
             thang=thang,
             nam=nam,
             dt_kho=dt_kho,
-            nhan_vien=request.user,
+            nhan_vien=user,
             tong_tien_ban=0,
             tong_tien_nhap=0,
             tong_tien_lai=0
