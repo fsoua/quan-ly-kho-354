@@ -38,7 +38,7 @@
                 <th>Tổng tiền nhập</th>
                 <th>Lãi suất (Tiền lãi)</th>
                 <th>Chi tiết</th>
-                <th>Thao tác </th>
+                <th>Hành Động</th>
             </tr>
         </thead>
         <tbody>
@@ -54,9 +54,7 @@
                 <td>
                     <a href="{% url 'chi_tiet_hop_dong' hd.contract_id %}" class="btn-detail">Chi tiết</a>
                 </td>
-                </td>
-                <a href="{% url 'xoa_hop_dong', hd.contract_id %}">Xóa</a>
-                </td>
+                <td> <a href="{% url 'xoa_hop_dong', hd.contract_id %}">Xóa</a> </td>
             </tr>
             {% empty %}
             <tr>
