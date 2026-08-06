@@ -402,6 +402,7 @@ def user_thuong_phat(request):
     })
 
 def tao_hop_dong(request):
+    user = get_current_user(request)
     do_vat = InventoryItem.objects.select_related('category', 'location').order_by('item_id')
 
     if request.method == 'POST':
@@ -418,6 +419,7 @@ def tao_hop_dong(request):
             thang=thang,
             nam=nam,
             dt_kho=dt_kho,
+            nhan_vien=user,
             tong_tien_ban=0,
             tong_tien_nhap=0,
             tong_tien_lai=0
@@ -464,7 +466,7 @@ def tao_hop_dong(request):
     return render(request, 'user/tao_hop_dong.html', {'do_vat': do_vat})
 
 def danh_sach_hop_dong(request):
-    hop_dongs = Contract.objects.all().order_by('-contract_id')
+    hop_dongs = Contract.objects.select_related('nhan_vien').all().order_by('-contract_id')
     return render(request, 'quan_ly/danh_sach_hop_dong.html', {'hop_dongs': hop_dongs})
 
 def chi_tiet_hop_dong(request, contract_id):
