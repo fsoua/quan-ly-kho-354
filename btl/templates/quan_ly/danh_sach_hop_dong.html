@@ -54,7 +54,9 @@
                 <td>
                     <a href="{% url 'chi_tiet_hop_dong' hd.contract_id %}" class="btn-detail">Chi tiết</a>
                 </td>
-                <a href="{% url 'xoa_hop_dong' hd.contract_id %}" class="btn-delete" onclick="return confirm('Bạn có chắc chắn muốn xóa hợp đồng này không?');" style="background-color: #dc3545; color: white; padding: 6px 12px; text-decoration: none; border-radius: 4px; margin-left: 5px;">Xóa</a>
+                </td>
+                <a href="{% url 'xoa_hop_dong' hd.contract_id %}">Xóa</a>
+                </td>
             </tr>
             {% empty %}
             <tr>
