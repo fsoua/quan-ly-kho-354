@@ -51,8 +51,11 @@
                 <td class="profit">{{ hd.tong_tien_lai|floatformat:0 }} VNĐ</td>
                 <td>
                     <a href="{% url 'chi_tiet_hop_dong' hd.contract_id %}" class="btn-detail">Chi tiết</a>
-            {% empty %}
-            <tr>
+                </td>
+                <td>
+                    <a href="{% url 'xoa_hop_dong' hd.contract_id %}">Xóa</a>
+                </td>
+                <tr>
                 <td colspan="7" style="text-align: center;">Chưa có hợp đồng nào được tạo.</td>
             </tr>
             {% endfor %}

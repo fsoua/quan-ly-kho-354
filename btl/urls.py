@@ -46,4 +46,5 @@ urlpatterns = [
     path('user/tao_hop_dong/', views.tao_hop_dong, name='tao_hop_dong'),
     path('quan_ly/hop_dong/', views.danh_sach_hop_dong, name='danh_sach_hop_dong'),
     path('quan_ly/hop_dong/chi_tiet/<int:contract_id>/', views.chi_tiet_hop_dong, name='chi_tiet_hop_dong'),
+    path('quan_ly/hop_dong/xoa/<int:contract_id>/', views.xoa_hop_dong, name='xoa_hop_dong'),
 ]

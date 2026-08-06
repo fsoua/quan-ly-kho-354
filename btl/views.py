@@ -474,3 +474,8 @@ def chi_tiet_hop_dong(request, contract_id):
         'contract': contract,
         'details': details
     })
+
+def xoa_hop_dong(request, contract_id):
+    contract = get_object_or_404(Contract, pk=contract_id)
+    contract.delete()
+    return redirect('danh_sach_hop_dong')
