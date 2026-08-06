@@ -400,3 +400,11 @@ def user_thuong_phat(request):
     return render(request, 'user/danh_sach_thuong_phat.html', {
         'thuong_phats': thuong_phats
     })
+
+def tao_hop_dong(request):
+    do_vat = InventoryItem.objects.all().order_by('item_id')
+    
+    if request.method == 'POST':
+        return redirect('tao_hop_dong')
+        
+    return render(request, 'user/tao_hop_dong.html', {'do_vat': do_vat})
