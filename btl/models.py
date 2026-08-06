@@ -38,6 +38,8 @@ class InventoryItem(models.Model):
     location = models.ForeignKey(StorageLocation, on_delete=models.RESTRICT)
     quantity = models.IntegerField(default=0)
     unit = models.CharField(max_length=50)
+    import_price = models.PositiveIntegerField(default=0)
+    sale_price = models.PositiveIntegerField(default=0)
 
     def __str__(self):
         return f"{self.item_name} ({self.quantity} {self.unit})"
