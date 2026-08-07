@@ -48,5 +48,5 @@ urlpatterns = [
     path('quan_ly/hop_dong/chi_tiet/<int:contract_id>/', views.chi_tiet_hop_dong, name='chi_tiet_hop_dong'),
     path('quan_ly/hop_dong/xoa/<int:contract_id>/', views.xoa_hop_dong, name='xoa_hop_dong'),
     path('quan_ly/bieu_do/', views.bieu_do_lai_suat, name='bieu_do_lai_suat'),
-    path('quan_ly/bieu_do_danh_muc/', views.bieu_do_danh_muc, name='bieu_do_danh_muc'),
+    path('quan_ly/bieu_do_do_vat/', views.bieu_do_do_vat, name='bieu_do_do_vat'),
 ]
