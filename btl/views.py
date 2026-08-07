@@ -517,11 +517,11 @@ def bieu_do_lai_suat(request):
     }
     return render(request, 'quan_ly/bieu_do_lai_suat.html', context)
 
-def bieu_do_danh_muc(request):
+def bieu_do_do_vat(request):
     start_date = request.GET.get('start_date')
     end_date = request.GET.get('end_date')
     
-    details = ContractDetail.objects.all()
+    details = ContractDetail.objects.select_related('contract', 'inventory_item')
     
     if start_date:
         details = details.filter(contract__created_at__gte=start_date)
@@ -529,7 +529,7 @@ def bieu_do_danh_muc(request):
         details = details.filter(contract__created_at__lte=end_date)
         
     chart_data = (
-        details.values('inventory_item__category__category_name')
+        details.values('inventory_item__item_name')
         .annotate(
             total_lai=Sum(
                 (F('gia_ban_thuc_te') - F('gia_nhap_thuc_te')) * F('quantity')
@@ -538,17 +538,17 @@ def bieu_do_danh_muc(request):
         .order_by('-total_lai')
     )
     
-    categories = []
+    item_names = []
     profits = []
     for item in chart_data:
-        cat_name = item['inventory_item__category__category_name'] or 'Khác'
-        categories.append(cat_name)
+        name = item['inventory_item__item_name'] or 'Không rõ'
+        item_names.append(name)
         profits.append(item['total_lai'] or 0)
         
     context = {
-        'categories': categories,
+        'item_names': item_names,
         'profits': profits,
         'start_date': start_date,
         'end_date': end_date,
     }
-    return render(request, 'quan_ly/bieu_do_danh_muc.html', context)
+    return render(request, 'quan_ly/bieu_do_do_vat.html', context)
