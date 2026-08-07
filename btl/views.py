@@ -4,7 +4,7 @@ from .models import User, Role, ServiceCategory, Report, Notification, StorageLo
 from .forms import InsertUserForm, UpdateUserForm, Quan_ly_do_vat, Noi_de_do, InventoryItemForm, NotificationForm, RewardForm
 from django.views.decorators.csrf import csrf_exempt
 from django.db import transaction
-from django.db.models import Sum
+from django.db.models import Sum, F
 from django.db.models.functions import TruncMonth
 
 def register(request):
