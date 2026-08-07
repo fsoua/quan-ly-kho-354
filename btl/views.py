@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
-from .models import User, Role, ServiceCategory, Report, Notification, StorageLocation, InventoryItem, Combo, Transaction, ApprovalLog, Reward_Penalty, Contract, ContractDetail
+from .models import User, Role, ServiceCategory, Notification, StorageLocation, InventoryItem, Combo, Transaction, ApprovalLog, Reward_Penalty, Contract, ContractDetail
 from .forms import InsertUserForm, UpdateUserForm, Quan_ly_do_vat, Noi_de_do, InventoryItemForm, NotificationForm, RewardForm
 from django.views.decorators.csrf import csrf_exempt
 from django.db import transaction
@@ -528,22 +528,21 @@ def bieu_do_do_vat(request):
     if end_date:
         details = details.filter(contract__created_at__lte=end_date)
         
-    chart_data = (
-        details.values('inventory_item__item_name')
-        .annotate(
-            total_lai=Sum(
-                (F('gia_ban_thuc_te') - F('gia_nhap_thuc_te')) * F('quantity')
-            )
-        )
-        .order_by('-total_lai')
-    )
+    profit_dict = {}
+    for detail in details:
+        if detail.inventory_item:
+            name = detail.inventory_item.item_name
+            lai = (detail.gia_ban_thuc_te - detail.gia_nhap_thuc_te) * detail.quantity
+            
+            if name in profit_dict:
+                profit_dict[name] += lai
+            else:
+                profit_dict[name] = lai
+                
+    sorted_data = sorted(profit_dict.items(), key=lambda x: x[1], reverse=True)
     
-    item_names = []
-    profits = []
-    for item in chart_data:
-        name = item['inventory_item__item_name'] or 'Không rõ'
-        item_names.append(name)
-        profits.append(item['total_lai'] or 0)
+    item_names = [item[0] for item in sorted_data]
+    profits = [item[1] for item in sorted_data]
         
     context = {
         'item_names': item_names,
