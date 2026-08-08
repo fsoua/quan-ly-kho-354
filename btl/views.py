@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
-from .models import User, Role, ServiceCategory, Notification, StorageLocation, InventoryItem, Combo, Transaction, ApprovalLog, Reward_Penalty, Contract, ContractDetail
+from .models import User, Role, ServiceCategory, Notification, StorageLocation, InventoryItem, Transaction, ApprovalLog, Reward_Penalty, Contract, ContractDetail
 from .forms import InsertUserForm, UpdateUserForm, Quan_ly_do_vat, Noi_de_do, InventoryItemForm, NotificationForm, RewardForm
 from django.views.decorators.csrf import csrf_exempt
 from django.db import transaction

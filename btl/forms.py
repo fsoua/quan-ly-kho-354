@@ -1,5 +1,5 @@
 from django import forms
-from .models import User, Role, ServiceCategory, Report, Notification, StorageLocation, InventoryItem, Combo, Transaction, ApprovalLog, Reward_Penalty
+from .models import User, Role, ServiceCategory, Notification, StorageLocation, InventoryItem, Transaction, ApprovalLog, Reward_Penalty
 
 class InsertUserForm(forms.ModelForm):
     class Meta:
