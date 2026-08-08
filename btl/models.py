@@ -43,14 +43,6 @@ class InventoryItem(models.Model):
 
     def __str__(self):
         return f"{self.item_name} ({self.quantity} {self.unit})"
-    
-class Combo(models.Model):
-    combo_id = models.AutoField(primary_key=True)
-    combo_name = models.CharField(max_length=200)
-    description = models.TextField(blank=True)
-
-    def __str__(self):
-        return self.combo_name
 
 class Transaction(models.Model):
     transaction_id = models.AutoField(primary_key=True)
@@ -79,17 +71,6 @@ class ApprovalLog(models.Model):
 
     def __str__(self):
         return f"Log #{self.log_id} - {self.get_action_display()}"
-    
-class Report(models.Model):
-    report_id = models.AutoField(primary_key=True)
-
-    item = models.ForeignKey(InventoryItem,on_delete=models.CASCADE)
-    reporter_id = models.ForeignKey(User,on_delete=models.CASCADE)
-    reason = models.TextField()
-    created_at = models.DateTimeField(auto_now_add=True)
-
-    def __str__(self):
-        return f"Report #{self.report_id} - {self.item.item_name}"
     
 class Notification(models.Model):
     notification_id = models.AutoField(primary_key=True)
