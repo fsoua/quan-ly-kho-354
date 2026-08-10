@@ -1,33 +1,169 @@
 <!DOCTYPE html>
 <html lang="vi">
 <head>
-  <meta charset="UTF-8"><title>Xin chào</title>
+  <meta charset="UTF-8">
+  <title>Thông tin cá nhân / Xin chào</title>
   <style>
-    body{font-family:Segoe UI,Arial;background:#eef3fb;margin:0;display:flex;justify-content:center;align-items:center;height:100vh}
-    .box{background:#fff;padding:30px 36px;border-radius:12px;box-shadow:0 10px 30px rgba(0,0,0,.1);width:520px;text-align:center}
-    h2{margin:0 0 10px}
-    p{margin:6px 0}
-    .row{display:flex;gap:10px;justify-content:center;margin-top:16px;flex-wrap:wrap}
-    a,button{display:inline-block;padding:10px 14px;border-radius:8px;text-decoration:none;font-weight:600;border:1px solid transparent}
-    .primary{background:#2f6fed;color:#fff}
-    .ghost{background:#e9edf7;color:#334}
-    .outline{background:#fff;color:#2f6fed;border-color:#2f6fed}
+    :root {
+      --primary: #2f6fed;
+      --primary-hover: #1d4ed8;
+      --bg-color: #f4f6f9;
+      --card-bg: #ffffff;
+      --text-main: #1e293b;
+      --text-muted: #64748b;
+      --border-color: #e2e8f0;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: var(--bg-color);
+      color: var(--text-main);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+    }
+
+    .box {
+      background: var(--card-bg);
+      padding: 40px 32px;
+      border-radius: 16px;
+      box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05), 0 8px 10px -6px rgba(0, 0, 0, 0.05);
+      width: 100%;
+      max-width: 440px;
+      text-align: center;
+      border: 1px solid var(--border-color);
+    }
+
+    /* Avatar giả lập phong cách hiện đại */
+    .avatar-icon {
+      width: 72px;
+      height: 72px;
+      background: linear-gradient(135deg, #2f6fed, #1d4ed8);
+      color: #fff;
+      font-size: 28px;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 50%;
+      margin: 0 auto 18px auto;
+      box-shadow: 0 4px 12px rgba(47, 111, 237, 0.25);
+    }
+
+    h2 {
+      font-size: 20px;
+      font-weight: 700;
+      color: var(--text-main);
+      margin-bottom: 8px;
+    }
+
+    .info-box {
+      background: #f8fafc;
+      padding: 14px 16px;
+      border-radius: 10px;
+      margin: 16px 0 24px 0;
+      text-align: left;
+      border: 1px solid var(--border-color);
+    }
+
+    p {
+      font-size: 14px;
+      color: var(--text-muted);
+      margin: 6px 0;
+      display: flex;
+      justify-content: space-between;
+    }
+
+    p b {
+      color: var(--text-main);
+      font-weight: 600;
+    }
+
+    .row {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin-top: 20px;
+    }
+
+    a {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 12px 16px;
+      border-radius: 10px;
+      text-decoration: none;
+      font-size: 14px;
+      font-weight: 600;
+      transition: all 0.2s ease;
+      border: 1px solid transparent;
+    }
+
+    .primary {
+      background: var(--primary);
+      color: #fff;
+      box-shadow: 0 2px 6px rgba(47, 111, 237, 0.2);
+    }
+
+    .primary:hover {
+      background: var(--primary-hover);
+      transform: translateY(-1px);
+    }
+
+    .btn-group {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+    }
+
+    .btn-next {
+      background: #e0f2fe;
+      color: #0369a1;
+    }
+    .btn-next:hover {
+      background: #bae6fd;
+    }
+
+    .ghost {
+      background: #fee2e2;
+      color: #dc2626;
+    }
+
+    .ghost:hover {
+      background: #fecaca;
+    }
   </style>
 </head>
 <body>
+
   <div class="box">
-    <h2>Xin chào, {{ user.full_name }}</h2>
-    <p>Email: <b>{{ user.email }}</b></p>
-    <p>Vai trò: <b>{{ user.role_id.role_name }}</b></p>
+    <!-- Icon đại diện thay thế cho phần trống -->
+    <div class="avatar-icon">👤</div>
+
+    <h2>Xin chào, {{ user.full_name }}!</h2>
+    
+    <div class="info-box">
+      <p>Email: <b>{{ user.email }}</b></p>
+      <p>Vai trò: <b style="color: var(--primary);">{{ user.role_id.role_name }}</b></p>
+    </div>
 
     <div class="row">
-      <a class="primary" href="{% url 'edit_profile' %}">Thay đổi thông tin cá nhân</a>
+      <a class="primary" href="{% url 'edit_profile' %}">✏️ Thay đổi thông tin cá nhân</a>
 
-      {% if user.role_id.role_name|upper == 'ADMIN' %}
-        <a class="primary" href="{% url 'admin_home' %}">Trang tiếp</a>
-      {% else %}
-        <a class="primary" href="{% url 'user_home' %}">Trang tiếp</a>
-      {% endif %}
-      <a class="ghost" href="{% url 'logout' %}">Đăng xuất</a>
+      <div class="btn-group">
+        {% if user.role_id.role_name|upper == 'ADMIN' %}
+          <a class="btn-next" href="{% url 'admin_home' %}">Trang tiếp ➔</a>
+        {% else %}
+          <a class="btn-next" href="{% url 'user_home' %}">Trang tiếp ➔</a>
+        {% endif %}
+        
+        <a class="ghost" href="{% url 'logout' %}">Đăng xuất</a>
+      </div>
+    </div>
+  </div>
+
 </body>
 </html>
