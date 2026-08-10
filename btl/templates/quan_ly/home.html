@@ -2,52 +2,286 @@
 <html lang="vi">
 <head>
   <meta charset="UTF-8">
-  <title>Trang chủ Admin</title>
+  <title>Bảng điều khiển Admin</title>
   <style>
-    body{font-family:Segoe UI,Arial;background:#eef3fb;margin:0;min-height:100vh;display:flex;justify-content:center;align-items:center}
-    .wrap{background:#fff;padding:32px 40px;border-radius:14px;box-shadow:0 12px 30px rgba(0,0,0,.1);width:680px}
-    h2{margin:0 0 6px;text-align:center}
-    p{margin:0 0 16px;text-align:center;color:#667085}
-    .grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin-top:10px}
-    a.btn{display:flex;align-items:center;justify-content:center;padding:14px;border-radius:10px;text-decoration:none;font-weight:600;border:1px solid transparent}
-    .primary{background:#2f6fed;color:#fff}
-    .ghost{background:#e9edf7;color:#334}
-    .outline{background:#fff;color:#2f6fed;border-color:#2f6fed}
-    .row{display:flex;gap:10px;justify-content:center;margin-top:16px}
+    :root {
+      --primary: #2f6fed;
+      --primary-hover: #2358cb;
+      --bg-color: #f4f6f9;
+      --sidebar-bg: #1e293b;
+      --sidebar-color: #94a3b8;
+      --sidebar-active: #334155;
+      --text-main: #1e293b;
+      --text-muted: #64748b;
+      --white: #ffffff;
+      --border-color: #e2e8f0;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: var(--bg-color); color: var(--text-main); display: flex; height: 100vh; overflow: hidden; }
+
+    /* --- SIDEBAR --- */
+    aside {
+      width: 280px;
+      background: var(--sidebar-bg);
+      color: var(--white);
+      display: flex;
+      flex-direction: column;
+      border-right: 1px solid rgba(255,255,255,0.05);
+    }
+
+    .brand {
+      padding: 24px 20px;
+      font-size: 18px;
+      font-weight: 700;
+      color: var(--white);
+      background: #0f172a;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .brand span { color: var(--primary); }
+
+    .sidebar-menu {
+      list-style: none;
+      padding: 20px 12px;
+      flex: 1;
+      overflow-y: auto;
+    }
+
+    .sidebar-menu li { margin-bottom: 6px; }
+
+    .sidebar-menu a {
+      display: flex;
+      align-items: center;
+      padding: 12px 16px;
+      color: var(--sidebar-color);
+      text-decoration: none;
+      font-size: 14px;
+      font-weight: 500;
+      border-radius: 8px;
+      transition: all 0.2s ease;
+    }
+
+    .sidebar-menu a:hover, .sidebar-menu a.active {
+      background: var(--sidebar-active);
+      color: var(--white);
+    }
+
+    /* --- MAIN WRAPPER --- */
+    .main-wrapper {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+
+    /* --- HEADER / BANNER --- */
+    header {
+      height: 70px;
+      background: var(--white);
+      border-bottom: 1px solid var(--border-color);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 30px;
+    }
+
+    .header-title h2 { font-size: 18px; font-weight: 600; color: var(--text-main); }
+    
+    .user-profile {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+    }
+
+    .user-info {
+      text-align: right;
+    }
+
+    .user-info .name { font-weight: 600; font-size: 14px; display: block; }
+    .user-info .role { font-size: 12px; color: var(--text-muted); }
+
+    .btn-logout {
+      background: #fee2e2;
+      color: #dc2626;
+      padding: 8px 14px;
+      border-radius: 6px;
+      text-decoration: none;
+      font-size: 13px;
+      font-weight: 600;
+      transition: background 0.2s;
+    }
+
+    .btn-logout:hover { background: #fecaca; }
+
+    /* --- CONTENT AREA --- */
+    .content {
+      padding: 30px;
+      flex: 1;
+      overflow-y: auto;
+    }
+
+    .welcome-banner {
+      background: linear-gradient(135deg, #2f6fed, #1d4ed8);
+      color: var(--white);
+      padding: 24px 30px;
+      border-radius: 12px;
+      margin-bottom: 24px;
+      box-shadow: 0 4px 12px rgba(47, 111, 237, 0.2);
+    }
+
+    .welcome-banner h1 { font-size: 22px; margin-bottom: 6px; }
+    .welcome-banner p { font-size: 14px; opacity: 0.9; }
+
+    .section-title {
+      font-size: 16px;
+      font-weight: 600;
+      margin-bottom: 16px;
+      color: var(--text-main);
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 16px;
+    }
+
+    .card-btn {
+      background: var(--white);
+      padding: 20px;
+      border-radius: 10px;
+      text-decoration: none;
+      color: var(--text-main);
+      font-weight: 600;
+      border: 1px solid var(--border-color);
+      box-shadow: 0 2px 4px rgba(0,0,0,0.02);
+      transition: all 0.2s ease;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .card-btn:hover {
+      border-color: var(--primary);
+      transform: translateY(-2px);
+      box-shadow: 0 6px 15px rgba(47, 111, 237, 0.1);
+      color: var(--primary);
+    }
+
+    /* --- FOOTER --- */
+    footer {
+      padding: 15px 30px;
+      background: var(--white);
+      border-top: 1px solid var(--border-color);
+      text-align: center;
+      font-size: 12px;
+      color: var(--text-muted);
+    }
   </style>
 </head>
 <body>
-  <div class="wrap">
-    <h2>Bảng điều khiển Admin</h2>
-    <p>Xin chào, <b>{{ user.full_name }}</b> • Vai trò: <b>{{ user.role_id.role_name }}</b></p>
+  <aside>
+    <div class="brand">
+      🛡️ <span>Nhà tang lễ bệnh viện quân y 354</span>
+    </div>
+    <ul class="sidebar-menu">
+      <li><a href="{% url 'quan_ly_do_vat' %}" class="active">📊 Tổng quan Admin</a></li>
+      <li><a href="{% url 'quan_ly_do_vat' %}">📋 Quản lý loại dịch vụ</a></li>
+      <li><a href="{% url 'noi_de_do' %}">📍 Quản lý nơi để đồ</a></li>
+      <li><a href="{% url 'danh_sach_do_vat' %}">📦 Quản lý danh sách đồ vật</a></li>
+      <li><a href="{% url 'admin_quan_ly_nhap_kho' %}">📥 Quản lý nhập kho</a></li>
+      <li><a href="{% url 'admin_quan_ly_xuat_kho' %}">📤 Quản lý xuất kho</a></li>
+      <li><a href="{% url 'danh_sach_thuong_phat' %}">⚖️ Quản lý thưởng phạt</a></li>
+      <li><a href="{% url 'danh_sach_hop_dong' %}">📝 Quản lý hợp đồng</a></li>
+      <li><a href="{% url 'bieu_do_lai_suat' %}">📈 Biểu đồ lãi suất</a></li>
+      <li><a href="{% url 'bieu_do_do_vat' %}">📊 Biểu đồ tiền lãi đồ vật</a></li>
+      <li><a href="{% url 'admin_notifications' %}">🔔 Quản lý thông báo</a></li>
+    </ul>
+  </aside>
 
-    <div class="grid">
+  <div class="main-wrapper">
 
-      <a class="outline btn" href="{% url 'quan_ly_do_vat' %}">Quản lý loại dịch vụ</a>
+    <header>
+      <div class="header-title">
+        <h2>Hệ thống quản lý hệ thống Admin</h2>
+      </div>
+      <div class="user-profile">
+        <div class="user-info">
+          <span class="name">{{ user.full_name }}</span>
+          <span class="role">{{ user.role_id.role_name }}</span>
+        </div>
+        <a class="btn-logout" href="{% url 'logout' %}">Đăng xuất</a>
+      </div>
+    </header>
+
+    <div class="content">
+      <div class="welcome-banner">
+        <h1>Xin chào, {{ user.full_name }}!</h1>
+        <p>Vai trò hệ thống: <b>{{ user.role_id.role_name }}</b>. Chúc bạn một ngày quản lý hiệu quả!</p>
+      </div>
+
+      <div class="section-title">Danh mục quản lý hệ thống</div>
       
-      <a class="outline btn" href="{% url 'noi_de_do' %}">Quản lý nơi để đồ</a>
+      <div class="grid">
+        <a class="card-btn" href="{% url 'quan_ly_do_vat' %}">
+          <span>📋 Quản lý loại dịch vụ</span>
+          <small style="color:var(--text-muted); font-weight:normal;">Cấu hình và phân loại dịch vụ</small>
+        </a>
 
-      <a class="outline btn" href="{% url 'danh_sach_do_vat' %}">Quản lý danh sách đồ vật</a>
+        <a class="card-btn" href="{% url 'noi_de_do' %}">
+          <span>📍 Quản lý nơi để đồ</span>
+          <small style="color:var(--text-muted); font-weight:normal;">Sắp xếp vị trí lưu trữ kho</small>
+        </a>
 
-      <a class="outline btn" href="{% url 'admin_notifications' %}">Quản lý thông báo</a>
+        <a class="card-btn" href="{% url 'danh_sach_do_vat' %}">
+          <span>📦 Quản lý danh sách đồ vật</span>
+          <small style="color:var(--text-muted); font-weight:normal;">Theo dõi chi tiết tài sản/đồ vật</small>
+        </a>
 
-      <a class="outline btn" href="{% url 'admin_quan_ly_nhap_kho' %}">Quản lý yêu cầu nhập kho</a>
+        <a class="card-btn" href="{% url 'admin_quan_ly_nhap_kho' %}">
+          <span>📥 Quản lý yêu cầu nhập kho</span>
+          <small style="color:var(--text-muted); font-weight:normal;">Phê duyệt nhập kho</small>
+        </a>
 
-      <a class="outline btn" href="{% url 'admin_quan_ly_xuat_kho' %}">Quản lý yêu cầu xuất kho</a>
+        <a class="card-btn" href="{% url 'admin_quan_ly_xuat_kho' %}">
+          <span>📤 Quản lý yêu cầu xuất kho</span>
+          <small style="color:var(--text-muted); font-weight:normal;">Phê duyệt xuất kho</small>
+        </a>
 
-      <a class="outline btn" href="{% url 'danh_sach_thuong_phat' %}">Quản lý danh sách thưởng phạt</a>
+        <a class="card-btn" href="{% url 'danh_sach_thuong_phat' %}">
+          <span>⚖️ Quản lý danh sách thưởng phạt</span>
+          <small style="color:var(--text-muted); font-weight:normal;">Cập nhật kỷ luật, khen thưởng</small>
+        </a>
 
-      <a class="outline btn" href="{% url 'danh_sach_hop_dong' %}">Quản lý hợp đồng</a>
+        <a class="card-btn" href="{% url 'danh_sach_hop_dong' %}">
+          <span>📝 Quản lý hợp đồng</span>
+          <small style="color:var(--text-muted); font-weight:normal;">Kiểm tra và theo dõi hợp đồng</small>
+        </a>
 
-      <a class="outline btn" href="{% url 'bieu_do_lai_suat' %}">Biểu đồ cột lãi suất</a>
+        <a class="card-btn" href="{% url 'admin_notifications' %}">
+          <span>🔔 Quản lý thông báo</span>
+          <small style="color:var(--text-muted); font-weight:normal;">Gửi và cấu hình thông báo chung</small>
+        </a>
 
-      <a class="outline btn" href="{% url 'bieu_do_do_vat' %}">Biểu đồ tiền lãi đồ vật</a>
+        <a class="card-btn" href="{% url 'bieu_do_lai_suat' %}">
+          <span>📈 Biểu đồ cột lãi suất</span>
+          <small style="color:var(--text-muted); font-weight:normal;">Thống kê biểu đồ lãi suất</small>
+        </a>
+
+        <a class="card-btn" href="{% url 'bieu_do_do_vat' %}">
+          <span>📊 Biểu đồ tiền lãi đồ vật</span>
+          <small style="color:var(--text-muted); font-weight:normal;">Phân tích tài chính đồ vật</small>
+        </a>
+      </div>
     </div>
 
+    <footer>
+      <p>&copy; 2026 Hệ thống quản lý nội bộ Admin. All rights reserved.</p>
+    </footer>
 
-    <div class="row">
-      <a class="ghost btn" href="{% url 'logout' %}">Đăng xuất</a>
-    </div>
   </div>
+
 </body>
 </html>
