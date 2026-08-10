@@ -1,3 +1,4 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="vi">
 <head>
@@ -31,8 +32,8 @@
     }
 
     .brand {
-      padding: 24px 20px;
-      font-size: 20px;
+      padding: 20px;
+      font-size: 16px;
       font-weight: 700;
       color: var(--white);
       background: #0f172a;
@@ -186,7 +187,8 @@
   <!-- 1. SIDEBAR (Thanh điều hướng bên) -->
   <aside>
     <div class="brand">
-      <img src="user/images/abc.jpg" alt="Logo" style="height: 30px; width: auto; vertical-align: middle; margin-right: 10px;">
+      <!-- ĐÃ SỬA ĐƯỜNG DẪN ẢNH DÙNG THẺ STATIC CỦA DJANGO -->
+      <img src="{% static 'images/abc.jpg' %}" alt="Logo" style="height: 35px; width: auto; border-radius: 4px; object-fit: contain;">
       <span>Nhà tang lễ bệnh viện quân y 354</span>
     </div>
     <ul class="sidebar-menu">
@@ -199,11 +201,8 @@
       <li><a href="{% url 'user_notifications' %}">🔔 Thông báo</a></li>
     </ul>
   </aside>
-
-  <!-- MAIN WRAPPER (Gồm Header, Nội dung và Footer) -->
   <div class="main-wrapper">
 
-    <!-- 2. HEADER / BANNER & LOGO -->
     <header>
       <div class="header-title">
         <h2>Hệ thống quản lý kho & nhân sự</h2>
@@ -217,7 +216,6 @@
       </div>
     </header>
 
-    <!-- 3. MAIN CONTENT (Nội dung chính) -->
     <div class="content">
       <div class="welcome-banner">
         <h1>Xin chào, {{ user.full_name }}!</h1>
