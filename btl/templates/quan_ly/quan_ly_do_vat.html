@@ -1,59 +1,239 @@
 <!DOCTYPE html>
 <html lang="vi">
 <head>
-<meta charset="UTF-8">
-<title>Quản lý Ngách đồ vật</title>
-<style>
-body{font-family:'Segoe UI',Arial;background:#f5f7fa;margin:0;padding:30px}
-.container{max-width:900px;margin:auto;background:#fff;padding:28px 36px;border-radius:12px;box-shadow:0 8px 28px rgba(0,0,0,.08)}
-h2{text-align:center;color:#1e40af;margin-bottom:16px}
-.topbar{display:flex;justify-content:space-between;align-items:center;margin-bottom:20px}
-.back-btn{background:#e9edf7;color:#1e3a8a;padding:10px 14px;border-radius:8px;text-decoration:none;font-weight:600}
-.back-btn:hover{background:#dbe3f2}
-form{margin-bottom:24px;display:flex;gap:10px;justify-content:center}
-input[type="text"]{padding:10px;border:1px solid #ccc;border-radius:8px;flex:1}
-button{background:#2563eb;color:#fff;border:none;padding:10px 16px;border-radius:8px;cursor:pointer}
-button:hover{background:#1d4ed8}
-table{width:100%;border-collapse:collapse;margin-top:12px}
-th,td{padding:12px;border-bottom:1px solid #e2e8f0}
-th{background:#1e40af;color:#fff;text-align:left}
-tr:hover{background:#f8fafc}
-a{text-decoration:none;color:#2563eb;font-weight:500}
-a:hover{text-decoration:underline}
-.action{display:flex;gap:8px}
-</style>
+  <meta charset="UTF-8">
+  <title>Quản lý kiểu dịch vụ</title>
+  <style>
+    :root {
+      --primary: #2f6fed;
+      --primary-hover: #1d4ed8;
+      --bg-color: #f4f6f9;
+      --card-bg: #ffffff;
+      --text-main: #1e293b;
+      --text-muted: #64748b;
+      --border-color: #e2e8f0;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: var(--bg-color);
+      color: var(--text-main);
+      padding: 40px 20px;
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+    }
+
+    .container {
+      width: 100%;
+      max-width: 900px;
+      background: var(--card-bg);
+      padding: 32px;
+      border-radius: 16px;
+      box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05), 0 8px 10px -6px rgba(0, 0, 0, 0.05);
+      border: 1px solid var(--border-color);
+    }
+
+    .topbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 24px;
+      padding-bottom: 16px;
+      border-bottom: 1px solid var(--border-color);
+    }
+
+    h2 {
+      font-size: 20px;
+      font-weight: 700;
+      color: var(--text-main);
+    }
+
+    .back-btn {
+      background: #f1f5f9;
+      color: var(--text-muted);
+      padding: 8px 14px;
+      border-radius: 8px;
+      text-decoration: none;
+      font-size: 13px;
+      font-weight: 600;
+      transition: all 0.2s ease;
+      border: 1px solid var(--border-color);
+    }
+
+    .back-btn:hover {
+      background: #e2e8f0;
+      color: var(--text-main);
+    }
+
+    /* Form thêm mới */
+    form {
+      display: flex;
+      gap: 12px;
+      margin-bottom: 28px;
+      background: #f8fafc;
+      padding: 16px;
+      border-radius: 12px;
+      border: 1px solid var(--border-color);
+    }
+
+    input[type="text"] {
+      flex: 1;
+      padding: 10px 14px;
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      font-size: 14px;
+      outline: none;
+      transition: border-color 0.2s;
+      background: #fff;
+    }
+
+    input[type="text"]:focus {
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(47, 111, 237, 0.1);
+    }
+
+    button[type="submit"] {
+      background: var(--primary);
+      color: #fff;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 8px;
+      font-weight: 600;
+      font-size: 14px;
+      cursor: pointer;
+      transition: background 0.2s, transform 0.1s;
+      box-shadow: 0 2px 4px rgba(47, 111, 237, 0.2);
+    }
+
+    button[type="submit"]:hover {
+      background: var(--primary-hover);
+    }
+
+    /* Bảng dữ liệu */
+    .table-wrapper {
+      border-radius: 10px;
+      border: 1px solid var(--border-color);
+      overflow: hidden;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      text-align: left;
+      font-size: 14px;
+    }
+
+    th, td {
+      padding: 14px 16px;
+    }
+
+    th {
+      background: #f8fafc;
+      color: var(--text-muted);
+      font-weight: 600;
+      border-bottom: 1px solid var(--border-color);
+      text-transform: uppercase;
+      font-size: 12px;
+      letter-spacing: 0.5px;
+    }
+
+    td {
+      border-bottom: 1px solid var(--border-color);
+      color: var(--text-main);
+    }
+
+    tr:last-child td {
+      border-bottom: none;
+    }
+
+    tr:hover td {
+      background: #f8fafc;
+    }
+
+    /* Nút thao tác Sửa / Xóa */
+    .action {
+      display: flex;
+      gap: 10px;
+    }
+
+    .action a {
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 13px;
+      padding: 6px 10px;
+      border-radius: 6px;
+      transition: all 0.2s;
+    }
+
+    .action a:first-child {
+      background: #e0f2fe;
+      color: #0369a1;
+    }
+    .action a:first-child:hover {
+      background: #bae6fd;
+    }
+
+    .action a:last-child {
+      background: #fee2e2;
+      color: #dc2626;
+    }
+    .action a:last-child:hover {
+      background: #fecaca;
+    }
+
+    .empty-row {
+      text-align: center;
+      color: var(--text-muted);
+      padding: 24px;
+    }
+  </style>
 </head>
 <body>
+
 <div class="container">
   <div class="topbar">
-    <h2>Quản lý kiểu dịch vụ</h2>
+    <h2>📁 Quản lý kiểu dịch vụ</h2>
     <a href="{% url 'admin_home' %}" class="back-btn">← Trang điều khiển</a>
   </div>
 
   <form method="post">
     {% csrf_token %}
     {{ form.category_name }}
-    <button type="submit">Thêm</button>
+    <button type="submit">Thêm mới</button>
   </form>
-  <table>
-    <tr>
-      <th>STT</th>
-      <th>Tên đồ vật</th>
-      <th>Thao tác</th>
-    </tr>
-    {% for c in do_vat %}
-    <tr>
-      <td>{{ forloop.counter }}</td>
-      <td>{{ c.category_name }}</td>
-      <td class="action">
-        <a href="{% url 'sua_do_vat' c.category_id %}">Sửa</a>
-        <a href="{% url 'xoa_do_vat' c.category_id %}">Xóa</a>
-      </td>
-    </tr>
-    {% empty %}
-      <tr><td colspan="3">Chưa có đồ vật nào.</td></tr>
-    {% endfor %}
-  </table>
+
+  <div class="table-wrapper">
+    <table>
+      <thead>
+        <tr>
+          <th style="width: 80px;">STT</th>
+          <th>Tên kiểu dịch vụ</th>
+          <th style="width: 150px;">Thao tác</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for c in do_vat %}
+        <tr>
+          <td>{{ forloop.counter }}</td>
+          <td><b>{{ c.category_name }}</b></td>
+          <td class="action">
+            <a href="{% url 'sua_do_vat' c.category_id %}">Sửa</a>
+            <a href="{% url 'xoa_do_vat' c.category_id %}">Xóa</a>
+          </td>
+        </tr>
+        {% empty %}
+        <tr>
+          <td colspan="3" class="empty-row">Chưa có kiểu dịch vụ nào.</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
 </div>
+
 </body>
 </html>
