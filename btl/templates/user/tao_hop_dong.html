@@ -1,69 +1,290 @@
 <!DOCTYPE html>
 <html lang="vi">
 <head>
-    <meta charset="UTF-8">
-    <title>Tạo Hợp Đồng Phục Vụ Tang Lễ</title>
-    <style>
-        body { font-family: Arial, sans-serif; margin: 20px; background-color: #f9f9f9; }
-        .container { max-width: 950px; margin: 0 auto; background: #fff; padding: 20px; border-radius: 8px; box-shadow: 0 0 10px rgba(0,0,0,0.1); }
-        h2 { text-align: center; color: #333; }
-        .header-info { display: flex; flex-wrap: wrap; gap: 15px; margin-bottom: 20px; align-items: center; justify-content: space-between; background: #f1f1f1; padding: 15px; border-radius: 5px; }
-        .header-info div { font-weight: bold; }
-        .header-info input { padding: 5px; border: 1px solid #ccc; border-radius: 4px; }
-        table { width: 100%; border-collapse: collapse; margin-top: 10px; }
-        th, td { border: 1px solid #ddd; padding: 8px; text-align: center; }
-        th { background-color: #007bff; color: white; }
-        td input[type="number"] { width: 70px; text-align: center; padding: 5px; border: 1px solid #ccc; border-radius: 4px; }
-        .btn-submit { display: block; width: 100%; margin-top: 20px; padding: 12px; background-color: #28a745; color: white; border: none; border-radius: 5px; cursor: pointer; font-size: 18px; font-weight: bold; text-align: center; }
-        .btn-submit:hover { background-color: #218838; }
-        .btn-back { padding: 8px 15px; background-color: #6c757d; color: white; text-decoration: none; border-radius: 4px; font-weight: bold; }
-        .btn-back:hover { background-color: #5a6268; }
-    </style>
+  <meta charset="UTF-8">
+  <title>Tạo Hợp Đồng Phục Vụ Tang Lễ</title>
+  <style>
+    :root {
+      --primary: #2f6fed;
+      --primary-hover: #2358cb;
+      --bg-color: #f4f6f9;
+      --sidebar-bg: #1e293b;
+      --sidebar-color: #94a3b8;
+      --sidebar-active: #334155;
+      --text-main: #1e293b;
+      --text-muted: #64748b;
+      --white: #ffffff;
+      --border-color: #e2e8f0;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: var(--bg-color); color: var(--text-main); display: flex; height: 100vh; overflow: hidden; }
+
+    aside {
+      width: 280px;
+      background: var(--sidebar-bg);
+      color: var(--white);
+      display: flex;
+      flex-direction: column;
+      border-right: 1px solid rgba(255,255,255,0.05);
+    }
+
+    .brand {
+      padding: 24px 20px;
+      font-size: 18px;
+      font-weight: 700;
+      color: var(--white);
+      background: #0f172a;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .brand span { color: var(--primary); }
+
+    .sidebar-menu {
+      list-style: none;
+      padding: 20px 12px;
+      flex: 1;
+      overflow-y: auto;
+    }
+
+    .sidebar-menu li { margin-bottom: 6px; }
+
+    .sidebar-menu a {
+      display: flex;
+      align-items: center;
+      padding: 12px 16px;
+      color: var(--sidebar-color);
+      text-decoration: none;
+      font-size: 14px;
+      font-weight: 500;
+      border-radius: 8px;
+      transition: all 0.2s ease;
+    }
+
+    .sidebar-menu a:hover, .sidebar-menu a.active {
+      background: var(--sidebar-active);
+      color: var(--white);
+    }
+
+    .main-wrapper {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+
+    header {
+      height: 70px;
+      background: var(--white);
+      border-bottom: 1px solid var(--border-color);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 30px;
+    }
+
+    .header-title h2 { font-size: 18px; font-weight: 600; color: var(--text-main); }
+    
+    .user-profile {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+    }
+
+    .user-info { text-align: right; }
+    .user-info .name { font-weight: 600; font-size: 14px; display: block; }
+    .user-info .role { font-size: 12px; color: var(--text-muted); }
+
+    .btn-logout {
+      background: #fee2e2;
+      color: #dc2626;
+      padding: 8px 14px;
+      border-radius: 6px;
+      text-decoration: none;
+      font-size: 13px;
+      font-weight: 600;
+      transition: background 0.2s;
+    }
+
+    .btn-logout:hover { background: #fecaca; }
+
+    .content {
+      padding: 30px;
+      flex: 1;
+      overflow-y: auto;
+    }
+
+    .page-card {
+      background: var(--white);
+      padding: 24px;
+      border-radius: 12px;
+      border: 1px solid var(--border-color);
+      box-shadow: 0 2px 4px rgba(0,0,0,0.02);
+      margin-bottom: 24px;
+    }
+
+    .top-action {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+    }
+
+    .top-action h3 { font-size: 16px; font-weight: 600; color: var(--text-main); }
+
+    .back-btn {
+      background: #f1f5f9;
+      color: var(--text-muted);
+      padding: 8px 14px;
+      border-radius: 6px;
+      text-decoration: none;
+      font-size: 13px;
+      font-weight: 600;
+      border: 1px solid var(--border-color);
+    }
+    .back-btn:hover { background: #e2e8f0; color: var(--text-main); }
+
+    .contract-info {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 15px;
+      background: #f8fafc;
+      padding: 20px;
+      border-radius: 8px;
+      margin-bottom: 20px;
+      border: 1px solid var(--border-color);
+    }
+
+    .contract-info label { font-weight: 600; font-size: 13px; color: var(--text-main); display: block; margin-bottom: 5px; }
+    .contract-info input { width: 100%; padding: 8px; border: 1px solid var(--border-color); border-radius: 6px; }
+
+    .table-wrapper {
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      overflow: hidden;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      text-align: left;
+      font-size: 14px;
+    }
+
+    th, td { padding: 12px 16px; border-bottom: 1px solid var(--border-color); vertical-align: middle; }
+    th { background: #f8fafc; color: var(--text-muted); font-weight: 600; font-size: 12px; text-transform: uppercase; text-align: center; }
+    td { text-align: center; }
+    td:nth-child(2) { text-align: left; }
+    tr:last-child td { border-bottom: none; }
+
+    input[type="number"] { width: 80px; padding: 6px; border: 1px solid var(--border-color); border-radius: 4px; text-align: center; }
+
+    .btn-submit {
+      background: var(--primary);
+      color: #fff;
+      border: none;
+      padding: 12px 24px;
+      border-radius: 8px;
+      font-weight: 600;
+      cursor: pointer;
+      width: 100%;
+      margin-top: 20px;
+    }
+    .btn-submit:hover { background: var(--primary-hover); }
+
+    footer {
+      padding: 15px 30px;
+      background: var(--white);
+      border-top: 1px solid var(--border-color);
+      text-align: center;
+      font-size: 12px;
+      color: var(--text-muted);
+    }
+  </style>
 </head>
 <body>
-<div class="container">
-    <h2>ĐỒ PHỤC VỤ TANG LỄ</h2>
-    <a href="{% url 'user_home' %}" class="btn-back">Trang điều khiển</a>    
-    <form method="POST">
-        {% csrf_token %}
-        <div class="header-info">
-            <div>Họ tên người mất: <input type="text" name="ten_nguoi_mat" placeholder="Nhập tên người mất" required style="width: 180px;"></div>
-            <div>NQ: <input type="text" name="nq" style="width: 70px;" placeholder="6h30"></div>
-            <div>Ngày: <input type="text" name="ngay" style="width: 40px;" value="28"> Tháng: <input type="text" name="thang" style="width: 40px;" value="08"> Năm: <input type="text" name="nam" style="width: 55px;" value="2025"></div>
-            <div>ĐT Kho: <input type="text" name="dt_kho" value="0816788883" style="width: 100px;"></div>
+
+  <aside>
+    <div class="brand">
+      👤 <span>User Panel</span>
+    </div>
+    <ul class="sidebar-menu">
+      <li><a href="{% url 'user_home' %}">📊 Tổng quan User</a></li>
+      <li><a href="{% url 'danh_sach_thuong_phat' %}">⚖️ Danh sách thưởng phạt</a></li>
+      <li><a href="#">📦 Danh sách kho đồ</a></li>
+      <li><a href="#">📥 Yêu cầu nhập hàng</a></li>
+      <li><a href="#">🔔 Thông báo</a></li>
+      <li><a href="#" class="active">📝 Tạo hợp đồng</a></li>
+    </ul>
+  </aside>
+
+  <div class="main-wrapper">
+
+    <header>
+      <div class="header-title">
+        <h2>Hệ thống quản lý nội bộ User</h2>
+      </div>
+      <div class="user-profile">
+        <div class="user-info">
+          <span class="name">{{ user.full_name }}</span>
+          <span class="role">{{ user.role_id.role_name }}</span>
+        </div>
+        <a class="btn-logout" href="{% url 'logout' %}">Đăng xuất</a>
+      </div>
+    </header>
+
+    <div class="content">
+      <div class="page-card">
+        <div class="top-action">
+          <h3>📝 Tạo Hợp Đồng Phục Vụ Tang Lễ</h3>
+          <a href="{% url 'user_home' %}" class="back-btn">← Trang điều khiển</a>
         </div>
 
-        <table>
-            <thead>
+        <form method="POST">
+          {% csrf_token %}
+          <div class="contract-info">
+            <div><label>Họ tên người mất</label><input type="text" name="ten_nguoi_mat" required></div>
+            <div><label>NQ</label><input type="text" name="nq" placeholder="6h30"></div>
+            <div><label>Ngày / Tháng / Năm</label><div style="display:flex; gap:5px;"><input type="text" name="ngay" value="28"><input type="text" name="thang" value="08"><input type="text" name="nam" value="2025"></div></div>
+            <div><label>ĐT Kho</label><input type="text" name="dt_kho" value="0816788883"></div>
+          </div>
+
+          <div class="table-wrapper">
+            <table>
+              <thead>
                 <tr>
-                    <th>TT</th>
-                    <th>Danh mục</th>
-                    <th>Đơn vị</th>
-                    <th>Đơn giá</th>
-                    <th>Số lượng</th>
+                  <th>STT</th>
+                  <th>Danh mục</th>
+                  <th>Đơn vị</th>
+                  <th>Đơn giá</th>
+                  <th>Số lượng</th>
                 </tr>
-            </thead>
-            <tbody>
+              </thead>
+              <tbody>
                 {% for item in do_vat %}
                 <tr>
-                    <td>{{ forloop.counter }}</td>
-                    <td style="text-align: left; padding-left: 10px;">{{ item.item_name }}</td>
-                    <td>{{ item.unit }}</td>
-                    <td>{{ item.gia_ban|floatformat:0 }} VNĐ</td>
-                    <td>
-                        <input type="number" name="qty_{{ item.item_id }}" value="0" min="0" step="any">
-                    </td>
-                </tr>
-                {% empty %}
-                <tr>
-                    <td colspan="5" style="text-align: center;">Chưa có dữ liệu đồ vật trong kho.</td>
+                  <td>{{ forloop.counter }}</td>
+                  <td><b>{{ item.item_name }}</b></td>
+                  <td>{{ item.unit }}</td>
+                  <td>{{ item.gia_ban|floatformat:0 }} VNĐ</td>
+                  <td><input type="number" name="qty_{{ item.item_id }}" value="0" min="0" step="any"></td>
                 </tr>
                 {% endfor %}
-            </tbody>
-        </table>
+              </tbody>
+            </table>
+          </div>
+          <button type="submit" class="btn-submit">Lưu Hợp Đồng</button>
+        </form>
+      </div>
+    </div>
 
-        <button type="submit" class="btn-submit">Lưu Hợp Đồng</button>
-    </form>
-</div>
+    <footer>
+      <p>&copy; 2026 Hệ thống quản lý nội bộ User. All rights reserved.</p>
+    </footer>
+
+  </div>
+
 </body>
 </html>
