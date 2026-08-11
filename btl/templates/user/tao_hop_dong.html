@@ -22,7 +22,7 @@
 
     aside {
       width: 280px;
-      background: var(--sidebar-bg);
+      background: #0f172a;
       color: var(--white);
       display: flex;
       flex-direction: column;
@@ -31,25 +31,24 @@
 
     .brand {
       padding: 24px 20px;
-      font-size: 18px;
+      font-size: 15px;
       font-weight: 700;
       color: var(--white);
       background: #0f172a;
       display: flex;
       align-items: center;
       gap: 10px;
+      line-height: 1.4;
     }
-
-    .brand span { color: var(--primary); }
 
     .sidebar-menu {
       list-style: none;
-      padding: 20px 12px;
+      padding: 10px 12px;
       flex: 1;
       overflow-y: auto;
     }
 
-    .sidebar-menu li { margin-bottom: 6px; }
+    .sidebar-menu li { margin-bottom: 4px; }
 
     .sidebar-menu a {
       display: flex;
@@ -61,6 +60,7 @@
       font-weight: 500;
       border-radius: 8px;
       transition: all 0.2s ease;
+      gap: 10px;
     }
 
     .sidebar-menu a:hover, .sidebar-menu a.active {
@@ -85,7 +85,7 @@
       padding: 0 30px;
     }
 
-    .header-title h2 { font-size: 18px; font-weight: 600; color: var(--text-main); }
+    .header-title h2 { font-size: 16px; font-weight: 600; color: var(--text-main); }
     
     .user-profile {
       display: flex;
@@ -95,7 +95,7 @@
 
     .user-info { text-align: right; }
     .user-info .name { font-weight: 600; font-size: 14px; display: block; }
-    .user-info .role { font-size: 12px; color: var(--text-muted); }
+    .user-info .role { font-size: 11px; color: var(--text-muted); font-weight: 700; background: #f1f5f9; padding: 2px 6px; border-radius: 4px; }
 
     .btn-logout {
       background: #fee2e2;
@@ -107,14 +107,9 @@
       font-weight: 600;
       transition: background 0.2s;
     }
-
     .btn-logout:hover { background: #fecaca; }
 
-    .content {
-      padding: 30px;
-      flex: 1;
-      overflow-y: auto;
-    }
+    .content { padding: 30px; flex: 1; overflow-y: auto; }
 
     .page-card {
       background: var(--white);
@@ -132,7 +127,7 @@
       margin-bottom: 20px;
     }
 
-    .top-action h3 { font-size: 16px; font-weight: 600; color: var(--text-main); }
+    .top-action h3 { font-size: 18px; font-weight: 600; color: var(--text-main); }
 
     .back-btn {
       background: #f1f5f9;
@@ -164,17 +159,13 @@
       border: 1px solid var(--border-color);
       border-radius: 8px;
       overflow: hidden;
+      max-height: 380px;
+      overflow-y: auto;
     }
 
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      text-align: left;
-      font-size: 14px;
-    }
-
+    table { width: 100%; border-collapse: collapse; text-align: left; font-size: 14px; }
     th, td { padding: 12px 16px; border-bottom: 1px solid var(--border-color); vertical-align: middle; }
-    th { background: #f8fafc; color: var(--text-muted); font-weight: 600; font-size: 12px; text-transform: uppercase; text-align: center; }
+    th { background: #f8fafc; color: var(--text-muted); font-weight: 600; font-size: 12px; text-transform: uppercase; text-align: center; position: sticky; top: 0; }
     td { text-align: center; }
     td:nth-child(2) { text-align: left; }
     tr:last-child td { border-bottom: none; }
@@ -182,7 +173,7 @@
     input[type="number"] { width: 80px; padding: 6px; border: 1px solid var(--border-color); border-radius: 4px; text-align: center; }
 
     .btn-submit {
-      background: var(--primary);
+      background: #28a745;
       color: #fff;
       border: none;
       padding: 12px 24px;
@@ -191,8 +182,9 @@
       cursor: pointer;
       width: 100%;
       margin-top: 20px;
+      font-size: 16px;
     }
-    .btn-submit:hover { background: var(--primary-hover); }
+    .btn-submit:hover { background: #218838; }
 
     footer {
       padding: 15px 30px;
@@ -208,28 +200,28 @@
 
   <aside>
     <div class="brand">
-      👤 <span>User Panel</span>
+      📦 Nhà tang lễ bệnh viện quân y 354
     </div>
     <ul class="sidebar-menu">
-      <li><a href="{% url 'user_home' %}">📊 Tổng quan User</a></li>
-      <li><a href="{% url 'danh_sach_thuong_phat' %}">⚖️ Danh sách thưởng phạt</a></li>
-      <li><a href="#">📦 Danh sách kho đồ</a></li>
-      <li><a href="#">📥 Yêu cầu nhập hàng</a></li>
-      <li><a href="#">🔔 Thông báo</a></li>
+      <li><a href="{% url 'user_home' %}">📊 Tổng quan</a></li>
+      <li><a href="#">📁 Kho đồ</a></li>
+      <li><a href="#">📥 Nhập kho</a></li>
+      <li><a href="#">📤 Xuất kho</a></li>
+      <li><a href="#">⚖️ Thưởng phạt</a></li>
       <li><a href="#" class="active">📝 Tạo hợp đồng</a></li>
+      <li><a href="#">🔔 Thông báo</a></li>
     </ul>
   </aside>
 
   <div class="main-wrapper">
-
     <header>
       <div class="header-title">
-        <h2>Hệ thống quản lý nội bộ User</h2>
+        <h2>Hệ thống quản lý kho & nhân sự</h2>
       </div>
       <div class="user-profile">
         <div class="user-info">
           <span class="name">{{ user.full_name }}</span>
-          <span class="role">{{ user.role_id.role_name }}</span>
+          <span class="role">USER</span>
         </div>
         <a class="btn-logout" href="{% url 'logout' %}">Đăng xuất</a>
       </div>
@@ -245,9 +237,16 @@
         <form method="POST">
           {% csrf_token %}
           <div class="contract-info">
-            <div><label>Họ tên người mất</label><input type="text" name="ten_nguoi_mat" required></div>
+            <div><label>Họ tên người mất</label><input type="text" name="ten_nguoi_mat" placeholder="Nhập tên người mất" required></div>
             <div><label>NQ</label><input type="text" name="nq" placeholder="6h30"></div>
-            <div><label>Ngày / Tháng / Năm</label><div style="display:flex; gap:5px;"><input type="text" name="ngay" value="28"><input type="text" name="thang" value="08"><input type="text" name="nam" value="2025"></div></div>
+            <div>
+              <label>Ngày / Tháng / Năm</label>
+              <div style="display:flex; gap:5px;">
+                <input type="text" name="ngay" value="28" style="width: 35%;">
+                <input type="text" name="thang" value="08" style="width: 35%;">
+                <input type="text" name="nam" value="2025" style="width: 30%;">
+              </div>
+            </div>
             <div><label>ĐT Kho</label><input type="text" name="dt_kho" value="0816788883"></div>
           </div>
 
@@ -255,7 +254,7 @@
             <table>
               <thead>
                 <tr>
-                  <th>STT</th>
+                  <th>TT</th>
                   <th>Danh mục</th>
                   <th>Đơn vị</th>
                   <th>Đơn giá</th>
@@ -271,6 +270,10 @@
                   <td>{{ item.gia_ban|floatformat:0 }} VNĐ</td>
                   <td><input type="number" name="qty_{{ item.item_id }}" value="0" min="0" step="any"></td>
                 </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="5" style="text-align: center; color: var(--text-muted);">Chưa có dữ liệu đồ vật trong kho.</td>
+                </tr>
                 {% endfor %}
               </tbody>
             </table>
@@ -281,9 +284,8 @@
     </div>
 
     <footer>
-      <p>&copy; 2026 Hệ thống quản lý nội bộ User. All rights reserved.</p>
+      <p>&copy; 2026 Hệ thống quản lý nội bộ. All rights reserved.</p>
     </footer>
-
   </div>
 
 </body>
