@@ -1,33 +1,277 @@
 <!DOCTYPE html>
 <html lang="vi">
 <head>
-<meta charset="UTF-8">
-<title>Sửa Địa điểm</title>
-<style>
-body{font-family:'Segoe UI',Arial;background:#f1f5f9;display:flex;justify-content:center;align-items:center;height:100vh;margin:0}
-.card{background:#fff;padding:32px 40px;border-radius:12px;box-shadow:0 10px 30px rgba(0,0,0,.1);width:400px;text-align:center}
-h2{color:#1e3a8a;margin-bottom:20px}
-input[type="text"]{width:100%;padding:10px;border:1px solid #ccc;border-radius:8px}
-button,a{display:inline-block;margin-top:14px;padding:10px 16px;border-radius:8px;text-decoration:none;font-weight:600}
-button{background:#2563eb;color:#fff;border:none;cursor:pointer}
-button:hover{background:#1d4ed8}
-a{background:#e2e8f0;color:#111827}
-a:hover{background:#cbd5e1}
-.back{display:block;margin-top:20px;color:#2563eb;text-decoration:none}
-.back:hover{text-decoration:underline}
-</style>
+  <meta charset="UTF-8">
+  <title>Sửa danh sách thưởng phạt</title>
+  <style>
+    :root {
+      --primary: #2f6fed;
+      --primary-hover: #2358cb;
+      --bg-color: #f4f6f9;
+      --sidebar-bg: #1e293b;
+      --sidebar-color: #94a3b8;
+      --sidebar-active: #334155;
+      --text-main: #1e293b;
+      --text-muted: #64748b;
+      --white: #ffffff;
+      --border-color: #e2e8f0;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: var(--bg-color); color: var(--text-main); display: flex; height: 100vh; overflow: hidden; }
+
+    aside {
+      width: 280px;
+      background: var(--sidebar-bg);
+      color: var(--white);
+      display: flex;
+      flex-direction: column;
+      border-right: 1px solid rgba(255,255,255,0.05);
+    }
+
+    .brand {
+      padding: 24px 20px;
+      font-size: 18px;
+      font-weight: 700;
+      color: var(--white);
+      background: #0f172a;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .brand span { color: var(--primary); }
+
+    .sidebar-menu {
+      list-style: none;
+      padding: 20px 12px;
+      flex: 1;
+      overflow-y: auto;
+    }
+
+    .sidebar-menu li { margin-bottom: 6px; }
+
+    .sidebar-menu a {
+      display: flex;
+      align-items: center;
+      padding: 12px 16px;
+      color: var(--sidebar-color);
+      text-decoration: none;
+      font-size: 14px;
+      font-weight: 500;
+      border-radius: 8px;
+      transition: all 0.2s ease;
+    }
+
+    .sidebar-menu a:hover, .sidebar-menu a.active {
+      background: var(--sidebar-active);
+      color: var(--white);
+    }
+
+    .main-wrapper {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+
+    header {
+      height: 70px;
+      background: var(--white);
+      border-bottom: 1px solid var(--border-color);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 30px;
+    }
+
+    .header-title h2 { font-size: 18px; font-weight: 600; color: var(--text-main); }
+    
+    .user-profile {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+    }
+
+    .user-info { text-align: right; }
+    .user-info .name { font-weight: 600; font-size: 14px; display: block; }
+    .user-info .role { font-size: 12px; color: var(--text-muted); }
+
+    .btn-logout {
+      background: #fee2e2;
+      color: #dc2626;
+      padding: 8px 14px;
+      border-radius: 6px;
+      text-decoration: none;
+      font-size: 13px;
+      font-weight: 600;
+      transition: background 0.2s;
+    }
+
+    .btn-logout:hover { background: #fecaca; }
+
+    .content {
+      padding: 30px;
+      flex: 1;
+      overflow-y: auto;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .page-card {
+      background: var(--white);
+      padding: 32px;
+      border-radius: 12px;
+      border: 1px solid var(--border-color);
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+      width: 100%;
+      max-width: 500px;
+    }
+
+    .top-action {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 24px;
+    }
+
+    .top-action h3 { font-size: 18px; font-weight: 600; color: var(--text-main); }
+
+    form {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    /* Django form layout helper if form.as_p is used */
+    p {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      margin-bottom: 16px;
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--text-main);
+    }
+
+    p input, p select, p textarea {
+      padding: 10px 14px;
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      font-size: 14px;
+      outline: none;
+      background: #fff;
+      width: 100%;
+      font-weight: normal;
+    }
+
+    p input:focus, p select:focus, p textarea:focus {
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(47, 111, 237, 0.1);
+    }
+
+    .button-group {
+      display: flex;
+      gap: 12px;
+      margin-top: 10px;
+    }
+
+    button[type="submit"] {
+      background: var(--primary);
+      color: #fff;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 8px;
+      font-weight: 600;
+      font-size: 14px;
+      cursor: pointer;
+      flex: 1;
+    }
+    button[type="submit"]:hover { background: var(--primary-hover); }
+
+    .cancel-btn {
+      background: #f1f5f9;
+      color: var(--text-muted);
+      padding: 10px 20px;
+      border-radius: 8px;
+      text-decoration: none;
+      font-size: 14px;
+      font-weight: 600;
+      border: 1px solid var(--border-color);
+      text-align: center;
+      flex: 1;
+    }
+    .cancel-btn:hover { background: #e2e8f0; color: var(--text-main); }
+
+    footer {
+      padding: 15px 30px;
+      background: var(--white);
+      border-top: 1px solid var(--border-color);
+      text-align: center;
+      font-size: 12px;
+      color: var(--text-muted);
+    }
+  </style>
 </head>
 <body>
-<div class="card">
-  <h2>Sửa danh sách thưởng phạt</h2>
-  <form method="post">
-    {% csrf_token %}
-    {{ form.as_p }}  <div>
-      <button type="submit">Lưu</button>
-      <a href="{% url 'danh_sach_thuong_phat' %}">Hủy</a>
+
+  <aside>
+    <div class="brand">
+      🛡️ <span>Admin Panel</span>
     </div>
-  </form>
-  <a href="{% url 'admin_home' %}" class="back"> Quay lại Trang điều khiển</a>
-</div>
+    <ul class="sidebar-menu">
+      <li><a href="{% url 'admin_home' %}">📊 Tổng quan Admin</a></li>
+      <li><a href="{% url 'quan_ly_do_vat' %}">📋 Quản lý loại dịch vụ</a></li>
+      <li><a href="{% url 'noi_de_do' %}">📍 Quản lý nơi để đồ</a></li>
+      <li><a href="{% url 'danh_sach_do_vat' %}">📦 Quản lý danh sách đồ vật</a></li>
+      <li><a href="{% url 'admin_quan_ly_nhap_kho' %}">📥 Quản lý nhập kho</a></li>
+      <li><a href="{% url 'admin_quan_ly_xuat_kho' %}">📤 Quản lý xuất kho</a></li>
+      <li><a href="{% url 'danh_sach_thuong_phat' %}" class="active">⚖️ Quản lý thưởng phạt</a></li>
+      <li><a href="{% url 'danh_sach_hop_dong' %}">📝 Quản lý hợp đồng</a></li>
+      <li><a href="{% url 'bieu_do_lai_suat' %}">📈 Biểu đồ lãi suất</a></li>
+      <li><a href="{% url 'bieu_do_do_vat' %}">📊 Biểu đồ tiền lãi đồ vật</a></li>
+      <li><a href="{% url 'admin_notifications' %}">🔔 Quản lý thông báo</a></li>
+    </ul>
+  </aside>
+
+  <div class="main-wrapper">
+
+    <header>
+      <div class="header-title">
+        <h2>Hệ thống quản lý hệ thống Admin</h2>
+      </div>
+      <div class="user-profile">
+        <div class="user-info">
+          <span class="name">{{ user.full_name }}</span>
+          <span class="role">{{ user.role_id.role_name }}</span>
+        </div>
+        <a class="btn-logout" href="{% url 'logout' %}">Đăng xuất</a>
+      </div>
+    </header>
+
+    <div class="content">
+      <div class="page-card">
+        <div class="top-action">
+          <h3>⚖️ Sửa danh sách thưởng phạt</h3>
+        </div>
+
+        <form method="post">
+          {% csrf_token %}
+          {{ form.as_p }}
+          <div class="button-group">
+            <button type="submit">Lưu</button>
+            <a href="{% url 'danh_sach_thuong_phat' %}" class="cancel-btn">Hủy</a>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <footer>
+      <p>&copy; 2026 Hệ thống quản lý nội bộ Admin. All rights reserved.</p>
+    </footer>
+
+  </div>
+
 </body>
 </html>

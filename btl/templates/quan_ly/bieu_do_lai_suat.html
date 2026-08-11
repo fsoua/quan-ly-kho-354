@@ -1,58 +1,316 @@
 <!DOCTYPE html>
 <html lang="vi">
 <head>
-    <meta charset="UTF-8">
-    <title>Biểu đồ lãi suất theo tháng</title>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <style>
-        body { font-family: Arial, sans-serif; margin: 30px; background-color: #f9f9f9; }
-        .container { max-width: 900px; margin: auto; background: white; padding: 20px; border-radius: 8px; box-shadow: 0px 0px 10px rgba(0,0,0,0.1); }
-        form { margin-bottom: 20px; display: flex; gap: 15px; align-items: center; }
-        input[type="date"] { padding: 8px; border: 1px solid #ccc; border-radius: 4px; }
-        button { padding: 8px 15px; background-color: #007bff; color: white; border: none; border-radius: 4px; cursor: pointer; }
-        button:hover { background-color: #0056b3; }
-    </style>
+  <meta charset="UTF-8">
+  <title>Biểu đồ lãi suất theo tháng</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <style>
+    :root {
+      --primary: #2f6fed;
+      --primary-hover: #2358cb;
+      --bg-color: #f4f6f9;
+      --sidebar-bg: #1e293b;
+      --sidebar-color: #94a3b8;
+      --sidebar-active: #334155;
+      --text-main: #1e293b;
+      --text-muted: #64748b;
+      --white: #ffffff;
+      --border-color: #e2e8f0;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: var(--bg-color); color: var(--text-main); display: flex; height: 100vh; overflow: hidden; }
+
+    aside {
+      width: 280px;
+      background: var(--sidebar-bg);
+      color: var(--white);
+      display: flex;
+      flex-direction: column;
+      border-right: 1px solid rgba(255,255,255,0.05);
+    }
+
+    .brand {
+      padding: 24px 20px;
+      font-size: 18px;
+      font-weight: 700;
+      color: var(--white);
+      background: #0f172a;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .brand span { color: var(--primary); }
+
+    .sidebar-menu {
+      list-style: none;
+      padding: 20px 12px;
+      flex: 1;
+      overflow-y: auto;
+    }
+
+    .sidebar-menu li { margin-bottom: 6px; }
+
+    .sidebar-menu a {
+      display: flex;
+      align-items: center;
+      padding: 12px 16px;
+      color: var(--sidebar-color);
+      text-decoration: none;
+      font-size: 14px;
+      font-weight: 500;
+      border-radius: 8px;
+      transition: all 0.2s ease;
+    }
+
+    .sidebar-menu a:hover, .sidebar-menu a.active {
+      background: var(--sidebar-active);
+      color: var(--white);
+    }
+
+    .main-wrapper {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+
+    header {
+      height: 70px;
+      background: var(--white);
+      border-bottom: 1px solid var(--border-color);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 30px;
+    }
+
+    .header-title h2 { font-size: 18px; font-weight: 600; color: var(--text-main); }
+    
+    .user-profile {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+    }
+
+    .user-info { text-align: right; }
+    .user-info .name { font-weight: 600; font-size: 14px; display: block; }
+    .user-info .role { font-size: 12px; color: var(--text-muted); }
+
+    .btn-logout {
+      background: #fee2e2;
+      color: #dc2626;
+      padding: 8px 14px;
+      border-radius: 6px;
+      text-decoration: none;
+      font-size: 13px;
+      font-weight: 600;
+      transition: background 0.2s;
+    }
+
+    .btn-logout:hover { background: #fecaca; }
+
+    .content {
+      padding: 30px;
+      flex: 1;
+      overflow-y: auto;
+    }
+
+    .page-card {
+      background: var(--white);
+      padding: 24px;
+      border-radius: 12px;
+      border: 1px solid var(--border-color);
+      box-shadow: 0 2px 4px rgba(0,0,0,0.02);
+      margin-bottom: 24px;
+    }
+
+    .top-action {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+    }
+
+    .top-action h3 { font-size: 16px; font-weight: 600; color: var(--text-main); }
+
+    .back-btn {
+      background: #f1f5f9;
+      color: var(--text-muted);
+      padding: 8px 14px;
+      border-radius: 6px;
+      text-decoration: none;
+      font-size: 13px;
+      font-weight: 600;
+      border: 1px solid var(--border-color);
+    }
+    .back-btn:hover { background: #e2e8f0; color: var(--text-main); }
+
+    form {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 16px;
+      background: #f8fafc;
+      padding: 20px;
+      border-radius: 10px;
+      border: 1px solid var(--border-color);
+      align-items: flex-end;
+      margin-bottom: 24px;
+    }
+
+    .form-field {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .form-field label {
+      font-weight: 600;
+      font-size: 13px;
+      color: var(--text-main);
+    }
+
+    input[type="date"] {
+      padding: 10px 14px;
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      font-size: 14px;
+      outline: none;
+      background: #fff;
+    }
+    input[type="date"]:focus { border-color: var(--primary); box-shadow: 0 0 0 3px rgba(47, 111, 237, 0.1); }
+
+    button[type="submit"] {
+      background: var(--primary);
+      color: #fff;
+      border: none;
+      padding: 10px 24px;
+      border-radius: 8px;
+      font-weight: 600;
+      font-size: 14px;
+      cursor: pointer;
+      height: 41px;
+    }
+    button[type="submit"]:hover { background: var(--primary-hover); }
+
+    .chart-container {
+      position: relative;
+      width: 100%;
+      height: 400px;
+    }
+
+    footer {
+      padding: 15px 30px;
+      background: var(--white);
+      border-top: 1px solid var(--border-color);
+      text-align: center;
+      font-size: 12px;
+      color: var(--text-muted);
+    }
+  </style>
 </head>
 <body>
-    <div class="container">
-        <h2>Biểu Đồ Thống Kê Lãi Suất Theo Tháng</h2>
+
+  <aside>
+    <div class="brand">
+      🛡️ <span>Admin Panel</span>
+    </div>
+    <ul class="sidebar-menu">
+      <li><a href="{% url 'admin_home' %}">📊 Tổng quan Admin</a></li>
+      <li><a href="{% url 'quan_ly_do_vat' %}">📋 Quản lý loại dịch vụ</a></li>
+      <li><a href="{% url 'noi_de_do' %}">📍 Quản lý nơi để đồ</a></li>
+      <li><a href="{% url 'danh_sach_do_vat' %}">📦 Quản lý danh sách đồ vật</a></li>
+      <li><a href="{% url 'admin_quan_ly_nhap_kho' %}">📥 Quản lý nhập kho</a></li>
+      <li><a href="{% url 'admin_quan_ly_xuat_kho' %}">📤 Quản lý xuất kho</a></li>
+      <li><a href="{% url 'danh_sach_thuong_phat' %}">⚖️ Quản lý thưởng phạt</a></li>
+      <li><a href="{% url 'danh_sach_hop_dong' %}">📝 Quản lý hợp đồng</a></li>
+      <li><a href="{% url 'bieu_do_lai_suat' %}" class="active">📈 Biểu đồ lãi suất</a></li>
+      <li><a href="{% url 'bieu_do_do_vat' %}">📊 Biểu đồ tiền lãi đồ vật</a></li>
+      <li><a href="{% url 'admin_notifications' %}">🔔 Quản lý thông báo</a></li>
+    </ul>
+  </aside>
+
+  <div class="main-wrapper">
+
+    <header>
+      <div class="header-title">
+        <h2>Hệ thống quản lý hệ thống Admin</h2>
+      </div>
+      <div class="user-profile">
+        <div class="user-info">
+          <span class="name">{{ user.full_name }}</span>
+          <span class="role">{{ user.role_id.role_name }}</span>
+        </div>
+        <a class="btn-logout" href="{% url 'logout' %}">Đăng xuất</a>
+      </div>
+    </header>
+
+    <div class="content">
+      <div class="page-card">
+        <div class="top-action">
+          <h3>📈 Biểu đồ thống kê lãi suất theo tháng</h3>
+          <a href="{% url 'admin_home' %}" class="back-btn">← Trang điều khiển</a>
+        </div>
 
         <form method="GET">
+          <div class="form-field">
             <label>Từ ngày:</label>
             <input type="date" name="start_date" value="{{ start_date }}">
-            
+          </div>
+          <div class="form-field">
             <label>Đến ngày:</label>
             <input type="date" name="end_date" value="{{ end_date }}">
-            
-            <button type="submit">Lọc biểu đồ</button>
+          </div>
+          <button type="submit">Lọc biểu đồ</button>
         </form>
 
-        <canvas id="profitChart" width="400" height="200"></canvas>
+        <div class="chart-container">
+          <canvas id="profitChart"></canvas>
+        </div>
+      </div>
     </div>
 
-    <script>
-        const ctx = document.getElementById('profitChart').getContext('2d');
-        const profitChart = new Chart(ctx, {
-            type: 'bar',
-            data: {
-                labels: {{ months|safe }},
-                datasets: [{
-                    label: 'Tổng lãi (VNĐ)',
-                    data: {{ profits|safe }},
-                    backgroundColor: 'rgba(54, 162, 235, 0.6)',
-                    borderColor: 'rgba(54, 162, 235, 1)',
-                    borderWidth: 1
-                }]
-            },
-            options: {
-                responsive: true,
-                scales: {
-                    y: {
-                        beginAtZero: true
-                    }
-                }
-            }
-        });
-    </script>
+    <footer>
+      <p>&copy; 2026 Hệ thống quản lý nội bộ Admin. All rights reserved.</p>
+    </footer>
+
+  </div>
+
+  <script>
+    const ctx = document.getElementById('profitChart').getContext('2d');
+    const profitChart = new Chart(ctx, {
+      type: 'bar',
+      data: {
+        labels: {{ months|safe }},
+        datasets: [{
+          label: 'Tổng lãi (VNĐ)',
+          data: {{ profits|safe }},
+          backgroundColor: 'rgba(47, 111, 237, 0.7)',
+          borderColor: 'rgba(47, 111, 237, 1)',
+          borderWidth: 1,
+          borderRadius: 6
+        }]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+          legend: {
+            position: 'top',
+          }
+        },
+        scales: {
+          y: {
+            beginAtZero: true,
+            grid: { color: '#f1f5f9' }
+          },
+          x: {
+            grid: { display: false }
+          }
+        }
+      }
+    });
+  </script>
 </body>
 </html>

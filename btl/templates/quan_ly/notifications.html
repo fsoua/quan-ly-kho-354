@@ -4,76 +4,330 @@
   <meta charset="UTF-8">
   <title>Quản lý thông báo</title>
   <style>
-    body{font-family:'Segoe UI',Arial;background:#eef3fb;margin:0;padding:40px;}
-    h2{text-align:center;color:#1d4ed8;margin-bottom:18px;}
-    table{border-collapse:collapse;width:90%;margin:20px auto;background:#fff;
-          border-radius:12px;overflow:hidden;box-shadow:0 6px 20px rgba(0,0,0,.1);}
-    th,td{padding:10px 14px;border-bottom:1px solid #e5e7eb;font-size:14px;}
-    th{background:#1d4ed8;color:#fff;text-align:left;}
-    tr:hover{background:#f1f5ff;}
-    .btn-del{background:#ef4444;color:#fff;padding:4px 10px;border-radius:6px;
-             text-decoration:none;font-size:13px;}
-    .btn-back{display:inline-block;padding:8px 14px;background:#1d4ed8;color:white;
-              text-decoration:none;border-radius:8px;margin-bottom:25px;}
-    .form-box{width:90%;margin:auto;background:white;padding:20px;border-radius:12px;
-              box-shadow:0 6px 20px rgba(0,0,0,.1);}
-    input,select,textarea{width:100%;padding:8px;border:1px solid #d1d5db;
-                          border-radius:6px;margin-top:6px;margin-bottom:14px;}
-    button{padding:8px 14px;background:#2563eb;color:#fff;border:none;border-radius:6px;
-           cursor:pointer;font-weight:600;}
+    :root {
+      --primary: #2f6fed;
+      --primary-hover: #2358cb;
+      --bg-color: #f4f6f9;
+      --sidebar-bg: #1e293b;
+      --sidebar-color: #94a3b8;
+      --sidebar-active: #334155;
+      --text-main: #1e293b;
+      --text-muted: #64748b;
+      --white: #ffffff;
+      --border-color: #e2e8f0;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: var(--bg-color); color: var(--text-main); display: flex; height: 100vh; overflow: hidden; }
+
+    aside {
+      width: 280px;
+      background: var(--sidebar-bg);
+      color: var(--white);
+      display: flex;
+      flex-direction: column;
+      border-right: 1px solid rgba(255,255,255,0.05);
+    }
+
+    .brand {
+      padding: 24px 20px;
+      font-size: 18px;
+      font-weight: 700;
+      color: var(--white);
+      background: #0f172a;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .brand span { color: var(--primary); }
+
+    .sidebar-menu {
+      list-style: none;
+      padding: 20px 12px;
+      flex: 1;
+      overflow-y: auto;
+    }
+
+    .sidebar-menu li { margin-bottom: 6px; }
+
+    .sidebar-menu a {
+      display: flex;
+      align-items: center;
+      padding: 12px 16px;
+      color: var(--sidebar-color);
+      text-decoration: none;
+      font-size: 14px;
+      font-weight: 500;
+      border-radius: 8px;
+      transition: all 0.2s ease;
+    }
+
+    .sidebar-menu a:hover, .sidebar-menu a.active {
+      background: var(--sidebar-active);
+      color: var(--white);
+    }
+
+    .main-wrapper {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+
+    header {
+      height: 70px;
+      background: var(--white);
+      border-bottom: 1px solid var(--border-color);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 30px;
+    }
+
+    .header-title h2 { font-size: 18px; font-weight: 600; color: var(--text-main); }
+    
+    .user-profile {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+    }
+
+    .user-info { text-align: right; }
+    .user-info .name { font-weight: 600; font-size: 14px; display: block; }
+    .user-info .role { font-size: 12px; color: var(--text-muted); }
+
+    .btn-logout {
+      background: #fee2e2;
+      color: #dc2626;
+      padding: 8px 14px;
+      border-radius: 6px;
+      text-decoration: none;
+      font-size: 13px;
+      font-weight: 600;
+      transition: background 0.2s;
+    }
+
+    .btn-logout:hover { background: #fecaca; }
+
+    .content {
+      padding: 30px;
+      flex: 1;
+      overflow-y: auto;
+    }
+
+    .page-card {
+      background: var(--white);
+      padding: 24px;
+      border-radius: 12px;
+      border: 1px solid var(--border-color);
+      box-shadow: 0 2px 4px rgba(0,0,0,0.02);
+      margin-bottom: 24px;
+    }
+
+    .top-action {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+    }
+
+    .top-action h3 { font-size: 16px; font-weight: 600; color: var(--text-main); }
+
+    .back-btn {
+      background: #f1f5f9;
+      color: var(--text-muted);
+      padding: 8px 14px;
+      border-radius: 6px;
+      text-decoration: none;
+      font-size: 13px;
+      font-weight: 600;
+      border: 1px solid var(--border-color);
+    }
+    .back-btn:hover { background: #e2e8f0; color: var(--text-main); }
+
+    form {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+
+    label {
+      font-weight: 600;
+      font-size: 13px;
+      color: var(--text-main);
+    }
+
+    input[type="text"], select, textarea {
+      width: 100%;
+      padding: 10px 14px;
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      font-size: 14px;
+      outline: none;
+      background: #fff;
+    }
+    input[type="text"]:focus, select:focus, textarea:focus { border-color: var(--primary); box-shadow: 0 0 0 3px rgba(47, 111, 237, 0.1); }
+
+    button[type="submit"] {
+      background: var(--primary);
+      color: #fff;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 8px;
+      font-weight: 600;
+      font-size: 14px;
+      cursor: pointer;
+      align-self: flex-start;
+    }
+    button[type="submit"]:hover { background: var(--primary-hover); }
+
+    .table-wrapper {
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      overflow: hidden;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      text-align: left;
+      font-size: 14px;
+    }
+
+    th, td { padding: 12px 16px; border-bottom: 1px solid var(--border-color); }
+    th { background: #f8fafc; color: var(--text-muted); font-weight: 600; font-size: 12px; text-transform: uppercase; }
+    tr:last-child td { border-bottom: none; }
+    tr:hover td { background: #f8fafc; }
+
+    .action { display: flex; gap: 8px; }
+    .action a { text-decoration: none; font-weight: 600; font-size: 13px; padding: 6px 10px; border-radius: 6px; }
+    .action a.btn-edit { background: #e0f2fe; color: #0369a1; }
+    .action a.btn-del { background: #fee2e2; color: #dc2626; }
+
+    footer {
+      padding: 15px 30px;
+      background: var(--white);
+      border-top: 1px solid var(--border-color);
+      text-align: center;
+      font-size: 12px;
+      color: var(--text-muted);
+    }
   </style>
 </head>
 <body>
 
-  <a href="{% url 'admin_home' %}" class="btn-back">← Trang điều khiển</a>
-  <h2>Quản lý thông báo</h2>
+  <aside>
+    <div class="brand">
+      🛡️ <span>Admin Panel</span>
+    </div>
+    <ul class="sidebar-menu">
+      <li><a href="{% url 'admin_home' %}">📊 Tổng quan Admin</a></li>
+      <li><a href="{% url 'quan_ly_do_vat' %}">📋 Quản lý loại dịch vụ</a></li>
+      <li><a href="{% url 'noi_de_do' %}">📍 Quản lý nơi để đồ</a></li>
+      <li><a href="{% url 'danh_sach_do_vat' %}">📦 Quản lý danh sách đồ vật</a></li>
+      <li><a href="{% url 'admin_quan_ly_nhap_kho' %}">📥 Quản lý nhập kho</a></li>
+      <li><a href="{% url 'admin_quan_ly_xuat_kho' %}">📤 Quản lý xuất kho</a></li>
+      <li><a href="{% url 'danh_sach_thuong_phat' %}">⚖️ Quản lý thưởng phạt</a></li>
+      <li><a href="{% url 'danh_sach_hop_dong' %}">📝 Quản lý hợp đồng</a></li>
+      <li><a href="{% url 'bieu_do_lai_suat' %}">📈 Biểu đồ lãi suất</a></li>
+      <li><a href="{% url 'bieu_do_do_vat' %}">📊 Biểu đồ tiền lãi đồ vật</a></li>
+      <li><a href="{% url 'admin_notifications' %}" class="active">🔔 Quản lý thông báo</a></li>
+    </ul>
+  </aside>
 
-  <div class="form-box">
-    <form method="POST" action="{% url 'admin_send_notification' %}">
-      {% csrf_token %}
-      <label>Gửi tới người dùng:</label>
-      <select name="user_id" required>
-        <option value="">-- Chọn người nhận --</option>
-        {% for u in users %}
-          <option value="{{ u.user_id }}">{{ u.full_name }}</option>
-        {% endfor %}
-      </select>
+  <div class="main-wrapper">
 
-      <label>Tiêu đề:</label>
-      <input type="text" name="title" required>
+    <header>
+      <div class="header-title">
+        <h2>Hệ thống quản lý hệ thống Admin</h2>
+      </div>
+      <div class="user-profile">
+        <div class="user-info">
+          <span class="name">{{ user.full_name }}</span>
+          <span class="role">{{ user.role_id.role_name }}</span>
+        </div>
+        <a class="btn-logout" href="{% url 'logout' %}">Đăng xuất</a>
+      </div>
+    </header>
 
-      <label>Nội dung:</label>
-      <textarea name="content" rows="3" required></textarea>
+    <div class="content">
+      <div class="page-card">
+        <div class="top-action">
+          <h3>🔔 Gửi thông báo mới</h3>
+          <a href="{% url 'admin_home' %}" class="back-btn">← Trang điều khiển</a>
+        </div>
 
-      <button type="submit">Gửi thông báo</button>
-    </form>
+        <form method="POST" action="{% url 'admin_send_notification' %}">
+          {% csrf_token %}
+          <div>
+            <label>Gửi tới người dùng:</label>
+            <select name="user_id" required>
+              <option value="">-- Chọn người nhận --</option>
+              {% for u in users %}
+                <option value="{{ u.user_id }}">{{ u.full_name }}</option>
+              {% endfor %}
+            </select>
+          </div>
+
+          <div>
+            <label>Tiêu đề:</label>
+            <input type="text" name="title" required>
+          </div>
+
+          <div>
+            <label>Nội dung:</label>
+            <textarea name="content" rows="3" required></textarea>
+          </div>
+
+          <button type="submit">Gửi thông báo</button>
+        </form>
+      </div>
+
+      <div class="page-card">
+        <div class="top-action">
+          <h3>📋 Danh sách thông báo</h3>
+        </div>
+
+        <div class="table-wrapper">
+          <table>
+            <thead>
+              <tr>
+                <th style="width: 60px;">ID</th>
+                <th>Người nhận</th>
+                <th>Tiêu đề</th>
+                <th>Nội dung</th>
+                <th style="width: 150px;">Thao tác</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for n in notifications %}
+              <tr>
+                <td>{{ n.notification_id }}</td>
+                <td><b>{{ n.user.full_name }}</b></td>
+                <td>{{ n.title }}</td>
+                <td>{{ n.content }}</td>
+                <td class="action">
+                  <a class="btn-edit" href="{% url 'admin_edit_notification' n.notification_id %}">Sửa</a>
+                  <a class="btn-del" href="{% url 'admin_delete_notification' n.notification_id %}">Xóa</a>
+                </td>
+              </tr>
+              {% empty %}
+              <tr>
+                <td colspan="5" style="text-align: center; color: var(--text-muted); padding: 24px;">Chưa có thông báo nào.</td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <footer>
+      <p>&copy; 2026 Hệ thống quản lý nội bộ Admin. All rights reserved.</p>
+    </footer>
+
   </div>
-
-  <h2 style="margin-top:40px;">Danh sách thông báo</h2>
-
-  <table>
-    <tr>
-      <th>ID</th>
-      <th>Người nhận</th>
-      <th>Tiêu đề</th>
-      <th>Nội dung</th>
-      <th>Xóa</th>
-      <th>Sửa</th>
-    </tr>
-
-    {% for n in notifications %}
-      <tr>
-        <td>{{ n.notification_id }}</td>
-        <td>{{ n.user.full_name }}</td>
-        <td>{{ n.title }}</td>
-        <td>{{ n.content }}</td>
-        <td><a class="btn-del" href="{% url 'admin_delete_notification' n.notification_id %}">Xóa</a></td>
-        <td><a class="btn-del" href="{% url 'admin_edit_notification' n.notification_id %}">Sửa</a></td>
-      </tr>
-    {% empty %}
-      <tr><td colspan="6" style="text-align:center;padding:12px;">Chưa có thông báo nào.</td></tr>
-    {% endfor %}
-  </table>
 
 </body>
 </html>

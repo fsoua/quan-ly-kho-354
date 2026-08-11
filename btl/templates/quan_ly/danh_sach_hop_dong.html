@@ -1,70 +1,275 @@
 <!DOCTYPE html>
 <html lang="vi">
 <head>
-    <meta charset="UTF-8">
-    <title>Quản Lý Hợp Đồng Tang Lễ</title>
-    <style>
-        body { font-family: Arial, sans-serif; margin: 20px; background-color: #f4f6f9; }
-        .container { max-width: 1100px; margin: 0 auto; background: #fff; padding: 20px; border-radius: 8px; box-shadow: 0 0 10px rgba(0,0,0,0.1); }
-        .top-bar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
-        h2 { color: #333; margin: 0; }
-        .btn-back { padding: 8px 15px; background-color: #6c757d; color: white; text-decoration: none; border-radius: 4px; font-weight: bold; }
-        .btn-back:hover { background-color: #5a6268; }
-        table { width: 100%; border-collapse: collapse; }
-        th, td { border: 1px solid #ddd; padding: 10px; text-align: center; }
-        th { background-color: #343a40; color: white; }
-        tr:nth-child(even) { background-color: #f9f9f9; }
-        .text-left { text-align: left; padding-left: 15px; }
-        .profit { color: #28a745; font-weight: bold; }
-        .btn-detail { padding: 6px 12px; background-color: #007bff; color: white; text-decoration: none; border-radius: 4px; }
-        .btn-detail:hover { background-color: #0056b3; }
-    </style>
+  <meta charset="UTF-8">
+  <title>Quản lý hợp đồng</title>
+  <style>
+    :root {
+      --primary: #2f6fed;
+      --primary-hover: #2358cb;
+      --bg-color: #f4f6f9;
+      --sidebar-bg: #1e293b;
+      --sidebar-color: #94a3b8;
+      --sidebar-active: #334155;
+      --text-main: #1e293b;
+      --text-muted: #64748b;
+      --white: #ffffff;
+      --border-color: #e2e8f0;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: var(--bg-color); color: var(--text-main); display: flex; height: 100vh; overflow: hidden; }
+
+    aside {
+      width: 280px;
+      background: var(--sidebar-bg);
+      color: var(--white);
+      display: flex;
+      flex-direction: column;
+      border-right: 1px solid rgba(255,255,255,0.05);
+    }
+
+    .brand {
+      padding: 24px 20px;
+      font-size: 18px;
+      font-weight: 700;
+      color: var(--white);
+      background: #0f172a;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .brand span { color: var(--primary); }
+
+    .sidebar-menu {
+      list-style: none;
+      padding: 20px 12px;
+      flex: 1;
+      overflow-y: auto;
+    }
+
+    .sidebar-menu li { margin-bottom: 6px; }
+
+    .sidebar-menu a {
+      display: flex;
+      align-items: center;
+      padding: 12px 16px;
+      color: var(--sidebar-color);
+      text-decoration: none;
+      font-size: 14px;
+      font-weight: 500;
+      border-radius: 8px;
+      transition: all 0.2s ease;
+    }
+
+    .sidebar-menu a:hover, .sidebar-menu a.active {
+      background: var(--sidebar-active);
+      color: var(--white);
+    }
+
+    .main-wrapper {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+
+    header {
+      height: 70px;
+      background: var(--white);
+      border-bottom: 1px solid var(--border-color);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 30px;
+    }
+
+    .header-title h2 { font-size: 18px; font-weight: 600; color: var(--text-main); }
+    
+    .user-profile {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+    }
+
+    .user-info { text-align: right; }
+    .user-info .name { font-weight: 600; font-size: 14px; display: block; }
+    .user-info .role { font-size: 12px; color: var(--text-muted); }
+
+    .btn-logout {
+      background: #fee2e2;
+      color: #dc2626;
+      padding: 8px 14px;
+      border-radius: 6px;
+      text-decoration: none;
+      font-size: 13px;
+      font-weight: 600;
+      transition: background 0.2s;
+    }
+
+    .btn-logout:hover { background: #fecaca; }
+
+    .content {
+      padding: 30px;
+      flex: 1;
+      overflow-y: auto;
+    }
+
+    .page-card {
+      background: var(--white);
+      padding: 24px;
+      border-radius: 12px;
+      border: 1px solid var(--border-color);
+      box-shadow: 0 2px 4px rgba(0,0,0,0.02);
+    }
+
+    .top-action {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+    }
+
+    .top-action h3 { font-size: 16px; font-weight: 600; color: var(--text-main); }
+
+    .back-btn {
+      background: #f1f5f9;
+      color: var(--text-muted);
+      padding: 8px 14px;
+      border-radius: 6px;
+      text-decoration: none;
+      font-size: 13px;
+      font-weight: 600;
+      border: 1px solid var(--border-color);
+    }
+    .back-btn:hover { background: #e2e8f0; color: var(--text-main); }
+
+    .table-wrapper {
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      overflow: hidden;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      text-align: left;
+      font-size: 14px;
+    }
+
+    th, td { padding: 12px 16px; border-bottom: 1px solid var(--border-color); vertical-align: middle; }
+    th { background: #f8fafc; color: var(--text-muted); font-weight: 600; font-size: 12px; text-transform: uppercase; text-align: center; }
+    td { text-align: center; }
+    td.text-left { text-align: left; }
+    tr:last-child td { border-bottom: none; }
+    tr:hover td { background: #f8fafc; }
+
+    .profit { color: #16a34a; font-weight: 600; }
+
+    .action { display: flex; gap: 8px; justify-content: center; }
+    .action a { text-decoration: none; font-weight: 600; font-size: 13px; padding: 6px 10px; border-radius: 6px; }
+    .action a.btn-detail { background: #e0f2fe; color: #0369a1; }
+    .action a.btn-del { background: #fee2e2; color: #dc2626; }
+
+    footer {
+      padding: 15px 30px;
+      background: var(--white);
+      border-top: 1px solid var(--border-color);
+      text-align: center;
+      font-size: 12px;
+      color: var(--text-muted);
+    }
+  </style>
 </head>
 <body>
-<div class="container">
-    <div class="top-bar">
-        <h2>DANH SÁCH HỢP ĐỒNG ĐÃ TẠO</h2>
-        <a href="{% url 'admin_home' %}" class="btn-back">Trang điều khiển</a>
+
+  <aside>
+    <div class="brand">
+      🛡️ <span>Admin Panel</span>
     </div>
-    
-    <table>
-        <thead>
-            <tr>
-                <th>STT</th>
-                <th>Tên người mất</th>
+    <ul class="sidebar-menu">
+      <li><a href="{% url 'admin_home' %}">📊 Tổng quan Admin</a></li>
+      <li><a href="{% url 'quan_ly_do_vat' %}">📋 Quản lý loại dịch vụ</a></li>
+      <li><a href="{% url 'noi_de_do' %}">📍 Quản lý nơi để đồ</a></li>
+      <li><a href="{% url 'danh_sach_do_vat' %}">📦 Quản lý danh sách đồ vật</a></li>
+      <li><a href="{% url 'admin_quan_ly_nhap_kho' %}">📥 Quản lý nhập kho</a></li>
+      <li><a href="{% url 'admin_quan_ly_xuat_kho' %}">📤 Quản lý xuất kho</a></li>
+      <li><a href="{% url 'danh_sach_thuong_phat' %}">⚖️ Quản lý thưởng phạt</a></li>
+      <li><a href="{% url 'danh_sach_hop_dong' %}" class="active">📝 Quản lý hợp đồng</a></li>
+      <li><a href="{% url 'bieu_do_lai_suat' %}">📈 Biểu đồ lãi suất</a></li>
+      <li><a href="{% url 'bieu_do_do_vat' %}">📊 Biểu đồ tiền lãi đồ vật</a></li>
+      <li><a href="{% url 'admin_notifications' %}">🔔 Quản lý thông báo</a></li>
+    </ul>
+  </aside>
+
+  <div class="main-wrapper">
+
+    <header>
+      <div class="header-title">
+        <h2>Hệ thống quản lý hệ thống Admin</h2>
+      </div>
+      <div class="user-profile">
+        <div class="user-info">
+          <span class="name">{{ user.full_name }}</span>
+          <span class="role">{{ user.role_id.role_name }}</span>
+        </div>
+        <a class="btn-logout" href="{% url 'logout' %}">Đăng xuất</a>
+      </div>
+    </header>
+
+    <div class="content">
+      <div class="page-card">
+        <div class="top-action">
+          <h3>📝 Danh sách hợp đồng đã tạo</h3>
+          <a href="{% url 'admin_home' %}" class="back-btn">← Trang điều khiển</a>
+        </div>
+
+        <div class="table-wrapper">
+          <table>
+            <thead>
+              <tr>
+                <th style="width: 60px;">STT</th>
+                <th class="text-left">Tên người mất</th>
                 <th>Ngày làm HĐ</th>
                 <th>Người làm HĐ</th>
                 <th>Tổng tiền bán</th>
                 <th>Tổng tiền nhập</th>
                 <th>Lãi suất (Tiền lãi)</th>
-                <th>Chi tiết</th>
-                <th>Hành Động</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for hd in hop_dongs %}
-            <tr>
+                <th style="width: 160px;">Hành động</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for hd in hop_dongs %}
+              <tr>
                 <td>{{ forloop.counter }}</td>
-                <td class="text-left"><strong>{{ hd.ten_nguoi_mat }}</strong></td>
+                <td class="text-left"><b>{{ hd.ten_nguoi_mat }}</b></td>
                 <td>{{ hd.ngay }}/{{ hd.thang }}/{{ hd.nam }}</td>
                 <td>{{ hd.nhan_vien.full_name }}</td>
                 <td>{{ hd.tong_tien_ban|floatformat:0 }} VNĐ</td>
                 <td>{{ hd.tong_tien_nhap|floatformat:0 }} VNĐ</td>
                 <td class="profit">{{ hd.tong_tien_lai|floatformat:0 }} VNĐ</td>
-                <td>
-                    <a href="{% url 'chi_tiet_hop_dong' hd.contract_id %}" class="btn-detail">Chi tiết</a>
+                <td class="action">
+                  <a href="{% url 'chi_tiet_hop_dong' hd.contract_id %}" class="btn-detail">Chi tiết</a>
+                  <a href="{% url 'xoa_hop_dong' hd.contract_id %}" class="btn-del">Xóa</a>
                 </td>
-                <td>
-                    <a href="{% url 'xoa_hop_dong' hd.contract_id %}">Xóa</a>
-                </td>
-            <tr>
-            {% empty %}
-            <tr>
-                <td colspan="7" style="text-align: center;">Chưa có hợp đồng nào được tạo.</td>
-            </tr>
-            {% endfor %}
-        </tbody>
-    </table>
-</div>
+              </tr>
+              {% empty %}
+              <tr>
+                <td colspan="8" style="text-align: center; color: var(--text-muted); padding: 24px;">Chưa có hợp đồng nào được tạo.</td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <footer>
+      <p>&copy; 2026 Hệ thống quản lý nội bộ Admin. All rights reserved.</p>
+    </footer>
+
+  </div>
+
 </body>
 </html>
